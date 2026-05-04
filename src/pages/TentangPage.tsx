@@ -1,4 +1,5 @@
-import { Heart, Target, Eye, Users, MapPin, Phone } from 'lucide-react';
+import { Heart, Target, Eye, Users, MapPin, Phone, BookOpen } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function TentangPage() {
   return (
@@ -6,7 +7,11 @@ export default function TentangPage() {
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
             <Users size={14} />
             TENTANG KAMI
@@ -18,10 +23,15 @@ export default function TentangPage() {
           <p className="text-gray-500 max-w-xl mx-auto">
             Portal digital yang lahir dari semangat kebersamaan masyarakat Gumelar
           </p>
-        </div>
+        </motion.div>
 
         {/* About Card */}
-        <div className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-8 text-white mb-8 shadow-xl relative overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-8 text-white mb-8 shadow-xl relative overflow-hidden"
+        >
           <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
           <div className="relative z-10">
             <div className="text-5xl font-black mb-3">GUMELAR<span className="text-yellow-400">.ID</span></div>
@@ -36,7 +46,48 @@ export default function TentangPage() {
               dan memajukan perekonomian lokal secara digital.
             </p>
           </div>
-        </div>
+        </motion.div>
+
+        {/* Sejarah Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center">
+              <BookOpen className="text-amber-600" size={24} />
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-gray-800">Sejarah & Asal Usul</h2>
+              <p className="text-sm text-gray-500">Legenda Adipati Munding Wilis & Makna Gumelar</p>
+            </div>
+          </div>
+
+          <div className="prose prose-green max-w-none text-gray-600 leading-relaxed space-y-4 text-sm md:text-base">
+            <p>
+              Nama <strong className="text-green-700 font-bold">Gumelar</strong> tidak lepas dari cerita rakyat yang melegenda di wilayah Banyumas Barat, khususnya berkaitan dengan masa Kerajaan Galuh Pakuan.
+            </p>
+            
+            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 my-6 rounded-r-xl italic">
+              "Kisah ini bermula saat istri Adipati Munding Wilis mengidam daging kijang berkaki putih, yang membawa rombongan Adipati berburu hingga ke pedalaman hutan Gumelar."
+            </div>
+
+            <p>
+              Dalam perjalanan perburuannya menunggangi kuda <em className="text-gray-800">Dawuk Mruyung</em>, rombongan sempat tersesat dan berhadapan dengan kelompok perampok Abulawang. Namun, di balik rintangan tersebut, mereka menemukan sebuah dataran yang sangat indah.
+            </p>
+
+            <p>
+              Nama <strong>Gumelar</strong> sendiri berasal dari bahasa Jawa yang berarti <span className="text-amber-700 font-semibold italic">"terhampar"</span> atau <span className="text-amber-700 font-semibold italic">"digelar"</span>. Konon, saat rombongan sampai di wilayah ini, mereka melihat pemandangan alam yang sangat luas dan hijau, tampak seolah-olah seperti permadani raksasa yang sedang <strong>digelar</strong> di permukaan bumi.
+            </p>
+            
+            <p>
+              Sejak saat itulah, wilayah yang subur dan asri ini dikenal dengan nama Gumelar, yang hingga kini terus berkembang menjadi pusat kreativitas dan kebersamaan masyarakatnya.
+            </p>
+          </div>
+        </motion.div>
 
         {/* Visi Misi */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
