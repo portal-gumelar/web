@@ -54,7 +54,7 @@ export default function TentangPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8"
+          className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center">

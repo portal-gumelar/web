@@ -55,7 +55,7 @@ export default function FomoNotification() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed bottom-6 left-6 z-50 max-w-xs bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 flex items-center gap-3 cursor-pointer"
+          className="fixed bottom-4 left-4 right-4 sm:right-auto sm:max-w-xs z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 flex items-center gap-3 cursor-pointer"
           onClick={() => setIsVisible(false)} // Dismiss on click
         >
           {/* Icon Box */}

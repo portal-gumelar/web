@@ -84,7 +84,7 @@ export default function HomePage({ setActivePage }: HomePageProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative z-10 max-w-5xl mx-auto px-6 py-20 text-center"
+          className="relative z-10 max-w-5xl mx-auto px-4 py-12 sm:py-20 text-center"
         >
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 px-5 py-2 rounded-full text-sm font-semibold mb-6 backdrop-blur-sm">
@@ -93,7 +93,7 @@ export default function HomePage({ setActivePage }: HomePageProps) {
           </div>
 
           {/* Main Title */}
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-4 leading-tight drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-4 leading-tight drop-shadow-2xl">
             GUMELAR<span className="text-yellow-400">.ID</span>
           </h1>
 
@@ -143,9 +143,9 @@ export default function HomePage({ setActivePage }: HomePageProps) {
             <Zap size={14} />
             SELAMAT DATANG
           </div>
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-            Selamat Datang di Ruang Kreatif<br />
-            <span className="text-yellow-400">Masyarakat Gumelar!</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+            Selamat Datang di Ruang Kreatif<br className="hidden sm:block" />
+            <span className="text-yellow-400"> Masyarakat Gumelar!</span>
           </h2>
           <p className="text-green-300 text-lg leading-relaxed max-w-2xl mx-auto">
             Portal Gumelar hadir sebagai wadah digital bagi seluruh masyarakat Gumelar dan sekitarnya
@@ -153,7 +153,7 @@ export default function HomePage({ setActivePage }: HomePageProps) {
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 mt-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-12">
             <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
               <div className="text-4xl font-black text-yellow-400">500+</div>
               <div className="text-green-300 text-sm mt-1">Member Aktif</div>

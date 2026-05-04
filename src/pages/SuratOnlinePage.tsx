@@ -45,7 +45,7 @@ Mohon arahannya untuk proses selanjutnya. Terima kasih.`;
         </button>
 
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white text-center">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 sm:p-8 text-white text-center">
             <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
               <FileSignature size={32} />
             </div>
@@ -55,7 +55,7 @@ Mohon arahannya untuk proses selanjutnya. Terima kasih.`;
             </p>
           </div>
 
-          <div className="p-8">
+          <div className="p-6 sm:p-8">
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-start gap-3">
               <AlertCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
               <p className="text-sm text-blue-800">

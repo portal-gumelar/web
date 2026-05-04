@@ -10,7 +10,7 @@ export default function TransparansiPage() {
             <PieChart size={14} />
             TRANSPARANSI DANA DESA
           </div>
-          <h1 className="text-4xl font-black text-gray-800 mb-3">
+          <h1 className="text-3xl sm:text-4xl font-black text-gray-800 mb-3">
             Keterbukaan <span className="text-indigo-600">Informasi Publik</span>
           </h1>
           <div className="w-16 h-1 bg-indigo-500 mx-auto rounded-full mb-4" />
@@ -45,7 +45,7 @@ export default function TransparansiPage() {
         </div>
 
         {/* Grafik Alokasi */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <PieChart className="text-indigo-600" />
             Alokasi Belanja Desa 2025
@@ -119,7 +119,7 @@ export default function TransparansiPage() {
         </div>
 
         {/* Proyek Berjalan */}
-        <div className="bg-indigo-900 rounded-3xl p-8 text-white relative overflow-hidden">
+        <div className="bg-indigo-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden">
           <div className="relative z-10">
             <h3 className="text-2xl font-black mb-6">Proyek Unggulan 2025</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
