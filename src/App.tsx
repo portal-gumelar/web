@@ -14,6 +14,7 @@ import DaftarMemberPage from './pages/DaftarMemberPage';
 import SuratOnlinePage from './pages/SuratOnlinePage';
 import TransparansiPage from './pages/TransparansiPage';
 import Footer from './components/layout/Footer';
+import FomoNotification from './components/ui/FomoNotification';
 
 export default function App() {
   const [activePage, setActivePage] = useState<ActivePage>('home');
@@ -66,6 +67,7 @@ export default function App() {
       {!hasOwnFooter && (
         <Footer setActivePage={setActivePage} />
       )}
+      <FomoNotification />
     </div>
   );
 }

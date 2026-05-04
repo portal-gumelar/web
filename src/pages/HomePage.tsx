@@ -1,4 +1,5 @@
 import { Coffee, Users, Newspaper, Palette, Briefcase, Star, ChevronRight, Shield, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { ActivePage } from '../types';
 
 interface HomePageProps {
@@ -79,7 +80,12 @@ export default function HomePage({ setActivePage }: HomePageProps) {
         <div className="absolute top-20 right-10 w-72 h-72 bg-yellow-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-green-400/10 rounded-full blur-3xl" />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 py-20 text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative z-10 max-w-5xl mx-auto px-6 py-20 text-center"
+        >
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 px-5 py-2 rounded-full text-sm font-semibold mb-6 backdrop-blur-sm">
             <Shield size={14} />
@@ -127,7 +133,7 @@ export default function HomePage({ setActivePage }: HomePageProps) {
             <span className="text-xs">Scroll untuk melihat menu</span>
             <ChevronRight size={20} className="rotate-90" />
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Welcome Section */}
