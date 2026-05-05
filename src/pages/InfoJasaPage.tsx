@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Briefcase, Phone, MapPin, ExternalLink, Search, Globe } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { mockMembers } from '../data/mockData';
 import { Member } from '../types';
 
@@ -38,6 +39,16 @@ const warnaBadge: Record<string, string> = {
   pjtki: 'bg-purple-100 text-purple-700',
 };
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut' } },
+};
+
 export default function InfoJasaPage() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'semua' | 'produksi' | 'jasa' | 'pjtki'>('semua');
@@ -55,7 +66,12 @@ export default function InfoJasaPage() {
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10"
+        >
           <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
             <Briefcase size={14} />
             INFORMASI JASA & USAHA
@@ -65,10 +81,15 @@ export default function InfoJasaPage() {
           </h1>
           <div className="w-16 h-1 bg-orange-500 mx-auto rounded-full mb-4" />
           <p className="text-gray-500">Temukan pelaku usaha, UMKM, dan penyedia jasa terpercaya di Gumelar</p>
-        </div>
+        </motion.div>
 
         {/* Search & Filter */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-8"
+        >
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -98,20 +119,34 @@ export default function InfoJasaPage() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Results count */}
         <p className="text-sm text-gray-500 mb-4">{filtered.length} usaha/jasa ditemukan</p>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           {filtered.map((member: Member) => (
-            <div key={member.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            <motion.div
+              key={member.id}
+              variants={cardVariants}
+              whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.10)' }}
+              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-shadow duration-200"
+            >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center text-white font-black text-lg shadow-md">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: -5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center text-white font-black text-lg shadow-md"
+                  >
                     {member.nama.charAt(0)}
-                  </div>
+                  </motion.div>
                   <div>
                     <h3 className="font-bold text-gray-800">{member.nama}</h3>
                     <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${warnaBadge[member.kategori]}`}>
@@ -145,14 +180,16 @@ export default function InfoJasaPage() {
                         {member.kontak}
                       </a>
                     </div>
-                    <a 
+                    <motion.a 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.96 }}
                       href={`https://wa.me/${member.kontak.replace(/\D/g, '')}?text=Halo%20${encodeURIComponent(member.nama)},%20saya%20melihat%20info%20usaha%20Anda%20di%20Portal%20Gumelar...`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 px-3 py-1 rounded-lg text-xs font-bold transition-all"
                     >
                       Pesan via WA
-                    </a>
+                    </motion.a>
                   </div>
                 )}
                 {member.linkUrl && (
@@ -164,20 +201,29 @@ export default function InfoJasaPage() {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-20">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20"
+          >
             <div className="text-5xl mb-4">🔍</div>
             <p className="text-gray-500 text-lg">Tidak ada hasil yang ditemukan</p>
             <p className="text-gray-400 text-sm">Coba dengan kata kunci lain</p>
-          </div>
+          </motion.div>
         )}
 
         {/* Tenaga Lepas Section */}
-        <div className="mt-12 bg-gradient-to-br from-green-700 to-green-900 rounded-2xl p-8 text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 bg-gradient-to-br from-green-700 to-green-900 rounded-2xl p-8 text-white"
+        >
           <h3 className="text-2xl font-black mb-3">🌾 Tenaga Lepas Pertanian</h3>
           <p className="text-green-200 mb-6">Cari dan temukan tenaga lepas pertanian yang berpengalaman di Gumelar</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -188,18 +234,31 @@ export default function InfoJasaPage() {
               { label: 'Tukang Matun', emoji: '🧹', desc: 'Pembersihan gulma sawah' },
               { label: 'Tukang Ngarit Pari', emoji: '🌾', desc: 'Panen padi tradisional' },
               { label: 'Tukang Traktor', emoji: '🚜', desc: 'Olah tanah mekanis' },
-            ].map(t => (
-              <div key={t.label} className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20">
+            ].map((t, i) => (
+              <motion.div
+                key={t.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20"
+              >
                 <div className="text-2xl mb-1">{t.emoji}</div>
                 <div className="font-bold text-sm">{t.label}</div>
                 <div className="text-xs text-green-200">{t.desc}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* PJTKI Section */}
-        <div className="mt-6 bg-gradient-to-br from-purple-700 to-purple-900 rounded-2xl p-8 text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mt-6 bg-gradient-to-br from-purple-700 to-purple-900 rounded-2xl p-8 text-white"
+        >
           <h3 className="text-2xl font-black mb-2">✈️ Penyalur Tenaga Kerja (PJTKI)</h3>
           <p className="text-purple-200 mb-6">Informasi penempatan tenaga kerja ke luar negeri melalui PJTKI resmi</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -210,15 +269,22 @@ export default function InfoJasaPage() {
               { flag: '🇪🇺', negara: 'Eropa' },
               { flag: '🇦🇺', negara: 'Australia' },
               { flag: '🌍', negara: 'Negara Lain' },
-            ].map(n => (
-              <div key={n.negara} className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20 text-center">
+            ].map((n, i) => (
+              <motion.div
+                key={n.negara}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20 text-center"
+              >
                 <div className="text-3xl mb-1">{n.flag}</div>
                 <div className="font-bold text-sm">{n.negara}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
           <p className="mt-4 text-xs text-purple-300">⚠️ Pastikan menggunakan PJTKI resmi dan terdaftar. Waspada penipuan.</p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

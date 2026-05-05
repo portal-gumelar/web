@@ -1,5 +1,6 @@
 import { Coffee, Users, Newspaper, Palette, Briefcase, Star, ChevronRight, Shield, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { ActivePage } from '../types';
 
 interface HomePageProps {
@@ -62,6 +63,40 @@ const menuCards = [
     num: '☕',
   },
 ];
+
+// Animation variants
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
+// Animated counter hook
+function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  return (
+    <motion.span
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.span
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ type: 'spring', stiffness: 150, delay: 0.2 }}
+      >
+        {value}{suffix}
+      </motion.span>
+    </motion.span>
+  );
+}
+
 
 export default function HomePage({ setActivePage }: HomePageProps) {
   return (
@@ -153,20 +188,26 @@ export default function HomePage({ setActivePage }: HomePageProps) {
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-12">
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <div className="text-4xl font-black text-amber-400">500+</div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-12"
+          >
+            <motion.div variants={cardVariants} className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="text-4xl font-black text-amber-400"><AnimatedNumber value={500} suffix="+" /></div>
               <div className="text-slate-400 text-sm mt-1">Member Aktif</div>
-            </div>
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <div className="text-4xl font-black text-amber-400">120+</div>
+            </motion.div>
+            <motion.div variants={cardVariants} className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="text-4xl font-black text-amber-400"><AnimatedNumber value={120} suffix="+" /></div>
               <div className="text-slate-400 text-sm mt-1">UMKM Terdaftar</div>
-            </div>
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <div className="text-4xl font-black text-amber-400">50+</div>
+            </motion.div>
+            <motion.div variants={cardVariants} className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="text-4xl font-black text-amber-400"><AnimatedNumber value={50} suffix="+" /></div>
               <div className="text-slate-400 text-sm mt-1">Karya Dipublish</div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -181,14 +222,23 @@ export default function HomePage({ setActivePage }: HomePageProps) {
             <p className="text-gray-500">Pilih menu di bawah untuk memulai</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {menuCards.map((card) => {
               const Icon = card.icon;
               return (
-                <button
+                <motion.button
                   key={card.id}
+                  variants={cardVariants}
+                  whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => setActivePage(card.id)}
-                  className={`${card.bg} group p-6 rounded-2xl border border-gray-200 hover:border-transparent hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-left relative overflow-hidden`}
+                  className={`${card.bg} group p-6 rounded-2xl border border-gray-200 hover:border-transparent transition-all duration-300 text-left relative overflow-hidden`}
                 >
                   {/* Number badge */}
                   <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center text-sm font-bold text-gray-400">
@@ -196,9 +246,13 @@ export default function HomePage({ setActivePage }: HomePageProps) {
                   </div>
 
                   {/* Icon */}
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <motion.div
+                    whileHover={{ scale: 1.15, rotate: -5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 shadow-lg`}
+                  >
                     <Icon className="text-white" size={24} />
-                  </div>
+                  </motion.div>
 
                   <h3 className="text-lg font-bold text-gray-800 mb-2">{card.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{card.desc}</p>
@@ -206,10 +260,10 @@ export default function HomePage({ setActivePage }: HomePageProps) {
                   <div className="mt-4 flex items-center gap-1 text-slate-700 text-sm font-semibold">
                     Buka <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
-                </button>
+                </motion.button>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
