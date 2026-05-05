@@ -12,14 +12,14 @@ export default function TentangPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
             <Users size={14} />
             TENTANG KAMI
           </div>
           <h1 className="text-4xl font-black text-gray-800 mb-3">
             Mengenal <span className="text-green-700">Gumelar.ID</span>
           </h1>
-          <div className="w-16 h-1 bg-green-600 mx-auto rounded-full mb-4" />
+          <div className="w-16 h-1 bg-amber-400 mx-auto rounded-full mb-4" />
           <p className="text-gray-500 max-w-xl mx-auto">
             Portal digital yang lahir dari semangat kebersamaan masyarakat Gumelar
           </p>
@@ -30,7 +30,7 @@ export default function TentangPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-8 text-white mb-8 shadow-xl relative overflow-hidden"
+          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 text-white mb-8 shadow-xl relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
           <div className="relative z-10">
