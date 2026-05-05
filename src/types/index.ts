@@ -34,6 +34,17 @@ export interface BeritaItem {
   komentar?: Comment[];
 }
 
+export interface AgendaItem {
+  id: string;
+  title: string;
+  tgl: string;
+  bln: string;
+  time: string;
+  loc: string;
+  deskripsi: string;
+  penulis: string;
+}
+
 export interface KaryaItem {
   id: string;
   judul: string;

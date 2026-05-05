@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin } from 'lucide-react';
+import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin, User, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockBerita } from '../data/mockData';
-import { BeritaItem, Comment } from '../types';
+import { BeritaItem, Comment, AgendaItem } from '../types';
 
 const kategoriWarna: Record<string, string> = {
   Pertanian: 'bg-green-100 text-green-700',
@@ -21,14 +21,14 @@ function getYouTubeId(url: string): string | null {
 
 export default function InformasiPage() {
   const [beritaList, setBeritaList] = useState<BeritaItem[]>(mockBerita);
-  const [agendaList, setAgendaList] = useState([
-    { tgl: '10', bln: 'Mei', title: 'Posyandu Balita & Lansia', loc: 'Balai Desa', time: '08:00' },
-    { tgl: '15', bln: 'Mei', title: 'Kerja Bakti Dusun', loc: 'Dusun II', time: '07:00' },
-    { tgl: '20', bln: 'Mei', title: 'Rapat Musrenbangdes', loc: 'Aula Balai Desa', time: '19:30' },
-    { tgl: '28', bln: 'Mei', title: 'Pengajian Rutin', loc: 'Masjid Jami', time: '20:00' },
+  const [agendaList, setAgendaList] = useState<AgendaItem[]>([
+    { id: '1', tgl: '10', bln: 'Mei', title: 'Posyandu Balita & Lansia', loc: 'Balai Desa', time: '08:00', deskripsi: 'Kegiatan rutin pemeriksaan kesehatan balita dan lansia di wilayah Gumelar. Mohon kehadiran warga tepat waktu.', penulis: 'Bidan Desa' },
+    { id: '2', tgl: '15', bln: 'Mei', title: 'Kerja Bakti Dusun', loc: 'Dusun II', time: '07:00', deskripsi: 'Membersihkan selokan dan jalanan dusun untuk menyambut musim hujan. Harap membawa peralatan masing-masing.', penulis: 'Kadus II' },
+    { id: '3', tgl: '20', bln: 'Mei', title: 'Rapat Musrenbangdes', loc: 'Aula Balai Desa', time: '19:30', deskripsi: 'Pembahasan rencana pembangunan desa tahun anggaran mendatang. Kehadiran tokoh masyarakat sangat diharapkan.', penulis: 'Sekdes' },
   ]);
   
   const [selectedBerita, setSelectedBerita] = useState<BeritaItem | null>(null);
+  const [selectedAgenda, setSelectedAgenda] = useState<AgendaItem | null>(null);
   const [showForm, setShowForm] = useState<'berita' | 'agenda' | null>(null);
   
   // Berita Form State
@@ -46,7 +46,9 @@ export default function InformasiPage() {
     tgl: '',
     bln: 'Mei',
     time: '',
-    loc: ''
+    loc: '',
+    deskripsi: '',
+    penulis: ''
   });
 
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
@@ -91,11 +93,12 @@ export default function InformasiPage() {
 
   const handleSubmitAgenda = (e: React.FormEvent) => {
     e.preventDefault();
-    setAgendaList([
-      { ...agendaForm },
-      ...agendaList
-    ]);
-    setAgendaForm({ title: '', tgl: '', bln: 'Mei', time: '', loc: '' });
+    const newAgenda: AgendaItem = {
+      ...agendaForm,
+      id: Date.now().toString(),
+    };
+    setAgendaList([newAgenda, ...agendaList]);
+    setAgendaForm({ title: '', tgl: '', bln: 'Mei', time: '', loc: '', deskripsi: '', penulis: '' });
     setShowForm(null);
   };
 
@@ -115,7 +118,6 @@ export default function InformasiPage() {
     const updatedList = beritaList.map(b => {
       if (b.id === selectedBerita.id) {
         const currentKomentar = b.komentar || [];
-        
         if (replyTarget) {
           const newKomentar = currentKomentar.map(c => {
             if (c.id === replyTarget.id) {
@@ -137,7 +139,89 @@ export default function InformasiPage() {
     setReplyTarget(null);
   };
 
-  // Detail view
+  // ---------------------------------------------------------
+  // AGENDA DETAIL VIEW
+  // ---------------------------------------------------------
+  if (selectedAgenda) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-24 pb-16 px-4">
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={() => setSelectedAgenda(null)}
+            className="flex items-center gap-2 text-slate-700 font-semibold mb-6 hover:underline transition-all"
+          >
+            ← Kembali ke Informasi
+          </button>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-amber-100"
+          >
+            {/* Header Banner */}
+            <div className="bg-gradient-to-br from-amber-500 to-amber-600 p-8 sm:p-12 text-white relative">
+              <div className="absolute top-0 right-0 p-10 opacity-10">
+                <Calendar size={180} />
+              </div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-white text-amber-600 rounded-2xl px-5 py-3 text-center shadow-lg">
+                  <div className="text-4xl font-black leading-none">{selectedAgenda.tgl}</div>
+                  <div className="text-sm font-bold uppercase tracking-widest mt-1">{selectedAgenda.bln}</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-md rounded-full px-4 py-1 text-xs font-bold uppercase tracking-wider">
+                  Agenda Desa
+                </div>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-black leading-tight mb-6">{selectedAgenda.title}</h1>
+              <div className="flex flex-wrap gap-6 text-sm font-medium">
+                <div className="flex items-center gap-2 bg-black/10 rounded-xl px-4 py-2">
+                  <Clock size={18} /> {selectedAgenda.time} WIB
+                </div>
+                <div className="flex items-center gap-2 bg-black/10 rounded-xl px-4 py-2">
+                  <MapPin size={18} /> {selectedAgenda.loc}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 sm:p-12">
+              <div className="flex items-center gap-3 mb-8 pb-6 border-b border-gray-100">
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                  <User size={20} />
+                </div>
+                <div>
+                  <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Penyelenggara / Penulis</div>
+                  <div className="text-gray-800 font-bold">{selectedAgenda.penulis}</div>
+                </div>
+              </div>
+
+              <div className="prose prose-slate max-w-none mb-10">
+                <h3 className="text-xl font-black text-gray-800 mb-4 flex items-center gap-2">
+                  <Info className="text-amber-500" /> Detail Kegiatan
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-wrap">{selectedAgenda.deskripsi}</p>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-100 rounded-3xl p-6 flex items-start gap-4">
+                <div className="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white shadow-lg flex-shrink-0">
+                  <Calendar size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-blue-900 mb-1">Simpan Tanggal Ini!</h4>
+                  <p className="text-sm text-blue-700 leading-relaxed">
+                    Jangan lupa hadir tepat waktu di <strong>{selectedAgenda.loc}</strong> pada jam <strong>{selectedAgenda.time} WIB</strong>. Kehadiran Anda sangat berarti bagi kemajuan desa.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------------------------------------------------------
+  // BERITA DETAIL VIEW (Existing)
+  // ---------------------------------------------------------
   if (selectedBerita) {
     return (
       <div className="min-h-screen bg-gray-50 pt-24 pb-16 px-4">
@@ -146,7 +230,7 @@ export default function InformasiPage() {
             onClick={() => setSelectedBerita(null)}
             className="flex items-center gap-2 text-slate-700 font-semibold mb-6 hover:underline transition-all"
           >
-            ← Kembali ke daftar berita
+            ← Kembali ke Informasi
           </button>
           
           <motion.div
@@ -215,22 +299,6 @@ export default function InformasiPage() {
                 </div>
 
                 <div className="bg-gray-50 rounded-2xl p-6 mb-10 border border-gray-100">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white ${isAdminMode ? 'bg-slate-800' : 'bg-amber-500'}`}>
-                      {isAdminMode ? 'A' : (commentForm.penulis?.charAt(0) || '?')}
-                    </div>
-                    <span className="text-sm font-bold text-gray-700">
-                      {isAdminMode ? 'Membalas sebagai Admin' : 'Tulis Komentar'}
-                    </span>
-                  </div>
-
-                  {replyTarget && (
-                    <div className="flex items-center justify-between bg-white px-4 py-2 rounded-xl mb-3 border border-amber-200 text-xs">
-                      <span className="text-gray-500">Membalas komentar <strong className="text-amber-600">{replyTarget.penulis}</strong></span>
-                      <button onClick={() => setReplyTarget(null)} className="text-red-500 font-bold hover:underline">Batal</button>
-                    </div>
-                  )}
-
                   <form onSubmit={handleAddComment} className="space-y-4">
                     {!isAdminMode && (
                       <input
@@ -243,7 +311,7 @@ export default function InformasiPage() {
                     )}
                     <textarea
                       required
-                      placeholder={replyTarget ? "Tulis balasan Anda..." : "Apa pendapat Anda tentang berita ini?"}
+                      placeholder={replyTarget ? "Tulis balasan Anda..." : "Apa pendapat Anda?"}
                       rows={3}
                       value={commentForm.konten}
                       onChange={e => setCommentForm({ ...commentForm, konten: e.target.value })}
@@ -251,73 +319,16 @@ export default function InformasiPage() {
                     />
                     <div className="flex justify-end">
                       <motion.button
-                        whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         type="submit"
                         className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all ${
-                          isAdminMode ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-amber-500 text-slate-900 hover:bg-amber-400'
+                          isAdminMode ? 'bg-slate-800 text-white' : 'bg-amber-500 text-slate-900'
                         }`}
                       >
-                        <Send size={16} />
-                        Kirim {replyTarget ? 'Balasan' : 'Komentar'}
+                        <Send size={16} /> Kirim
                       </motion.button>
                     </div>
                   </form>
-                </div>
-
-                <div className="space-y-8">
-                  {selectedBerita.komentar && selectedBerita.komentar.length > 0 ? (
-                    selectedBerita.komentar.map(comment => (
-                      <div key={comment.id} className="group">
-                        <div className="flex gap-4">
-                          <div className={`w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold text-white shadow-sm ${comment.isAdmin ? 'bg-slate-800' : 'bg-slate-200 text-slate-600'}`}>
-                            {comment.isAdmin ? <ShieldCheck size={18} /> : comment.penulis.charAt(0)}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-bold text-gray-800 text-sm">{comment.penulis}</span>
-                              {comment.isAdmin && <span className="bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded-full font-black uppercase">Admin</span>}
-                              <span className="text-[10px] text-gray-400">{comment.tanggal}</span>
-                            </div>
-                            <p className="text-gray-600 text-sm leading-relaxed mb-3">{comment.konten}</p>
-                            <button 
-                              onClick={() => {
-                                setReplyTarget({ id: comment.id, penulis: comment.penulis });
-                              }}
-                              className="flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700 transition-colors"
-                            >
-                              <Reply size={12} /> Balas
-                            </button>
-
-                            {comment.balasan && comment.balasan.length > 0 && (
-                              <div className="mt-5 space-y-5 border-l-2 border-gray-100 pl-6">
-                                {comment.balasan.map(reply => (
-                                  <div key={reply.id} className="flex gap-3">
-                                    <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold text-white ${reply.isAdmin ? 'bg-slate-800' : 'bg-gray-200 text-gray-600'}`}>
-                                      {reply.isAdmin ? <ShieldCheck size={14} /> : reply.penulis.charAt(0)}
-                                    </div>
-                                    <div>
-                                      <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-bold text-gray-800 text-xs">{reply.penulis}</span>
-                                        {reply.isAdmin && <span className="bg-slate-800 text-white text-[8px] px-1.5 py-0.5 rounded-full font-black uppercase">Admin</span>}
-                                        <span className="text-[9px] text-gray-400">{reply.tanggal}</span>
-                                      </div>
-                                      <p className="text-gray-600 text-xs leading-relaxed">{reply.konten}</p>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-                      <MessageSquare size={40} className="mx-auto text-gray-200 mb-3" />
-                      <p className="text-gray-400 text-sm">Belum ada komentar. Jadilah yang pertama!</p>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -327,6 +338,9 @@ export default function InformasiPage() {
     );
   }
 
+  // ---------------------------------------------------------
+  // MAIN LIST VIEW
+  // ---------------------------------------------------------
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16 px-4">
       <div className="max-w-5xl mx-auto">
@@ -392,75 +406,19 @@ export default function InformasiPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Judul Berita *</label>
-                    <input
-                      required
-                      type="text"
-                      value={form.judul}
-                      onChange={e => setForm({ ...form, judul: e.target.value })}
-                      placeholder="Apa yang terjadi di Gumelar?"
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
-                    />
+                    <input required type="text" value={form.judul} onChange={e => setForm({ ...form, judul: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
-                    <select
-                      value={form.kategori}
-                      onChange={e => setForm({ ...form, kategori: e.target.value })}
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                    >
-                      {['Umum', 'Pertanian', 'Ekonomi', 'Budaya', 'Infrastruktur'].map(k => (
-                        <option key={k} value={k}>{k}</option>
-                      ))}
+                    <select value={form.kategori} onChange={e => setForm({ ...form, kategori: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none">
+                      {['Umum', 'Pertanian', 'Ekonomi', 'Budaya', 'Infrastruktur'].map(k => <option key={k} value={k}>{k}</option>)}
                     </select>
                   </div>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Nama Penulis *</label>
-                    <input
-                      required
-                      type="text"
-                      value={form.penulis}
-                      onChange={e => setForm({ ...form, penulis: e.target.value })}
-                      placeholder="Nama lengkap Anda"
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Link YouTube (Opsional)</label>
-                    <input
-                      type="url"
-                      value={form.youtubeUrl}
-                      onChange={e => setForm({ ...form, youtubeUrl: e.target.value })}
-                      placeholder="https://youtube.com/..."
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-400 outline-none"
-                    />
-                  </div>
-                </div>
-
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Isi Berita *</label>
-                  <textarea
-                    required
-                    rows={6}
-                    value={form.konten}
-                    onChange={e => setForm({ ...form, konten: e.target.value })}
-                    placeholder="Ceritakan detail beritanya di sini..."
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none"
-                  />
+                  <textarea required rows={6} value={form.konten} onChange={e => setForm({ ...form, konten: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none" />
                 </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Unggah Foto (Opsional)</label>
-                  <input type="file" accept="image/*" onChange={handleFotoChange} className="hidden" id="foto-berita" />
-                  <label htmlFor="foto-berita" className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-2xl py-6 hover:border-amber-400 cursor-pointer transition-all">
-                    <Image className="text-gray-400" />
-                    <span className="text-sm text-gray-500">Klik untuk pilih gambar utama</span>
-                  </label>
-                  {fotoPreview && <img src={fotoPreview} className="mt-4 h-32 rounded-xl border" />}
-                </div>
-
                 <div className="flex gap-4">
                   <button type="submit" className="flex-1 bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-700 transition-all">Publikasikan Berita</button>
                   <button type="button" onClick={() => setShowForm(null)} className="px-8 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200">Batal</button>
@@ -478,79 +436,42 @@ export default function InformasiPage() {
               className="bg-white rounded-3xl shadow-xl border border-amber-100 p-8 mb-12 overflow-hidden"
             >
               <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2">
-                <Calendar className="text-amber-500" /> Tambah Agenda Desa
+                <Calendar className="text-amber-500" /> Buat Agenda Desa (Landing Page Otomatis)
               </h3>
               <form onSubmit={handleSubmitAgenda} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Nama Kegiatan *</label>
-                    <input
-                      required
-                      type="text"
-                      value={agendaForm.title}
-                      onChange={e => setAgendaForm({ ...agendaForm, title: e.target.value })}
-                      placeholder="Contoh: Rapat RT 01"
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                    />
+                    <input required type="text" value={agendaForm.title} onChange={e => setAgendaForm({ ...agendaForm, title: e.target.value })} placeholder="Contoh: Rapat RT 01" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Lokasi *</label>
-                    <div className="relative">
-                      <MapPin className="absolute left-4 top-3.5 text-gray-400" size={18} />
-                      <input
-                        required
-                        type="text"
-                        value={agendaForm.loc}
-                        onChange={e => setAgendaForm({ ...agendaForm, loc: e.target.value })}
-                        placeholder="Contoh: Balai Desa"
-                        className="w-full border border-gray-200 rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                      />
-                    </div>
+                    <input required type="text" value={agendaForm.loc} onChange={e => setAgendaForm({ ...agendaForm, loc: e.target.value })} placeholder="Contoh: Balai Desa" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Tanggal *</label>
-                    <input
-                      required
-                      type="number"
-                      min="1"
-                      max="31"
-                      value={agendaForm.tgl}
-                      onChange={e => setAgendaForm({ ...agendaForm, tgl: e.target.value })}
-                      placeholder="1-31"
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Bulan *</label>
-                    <select
-                      value={agendaForm.bln}
-                      onChange={e => setAgendaForm({ ...agendaForm, bln: e.target.value })}
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                    >
-                      {['Mei', 'Juni', 'Juli', 'Agustus'].map(m => <option key={m} value={m}>{m}</option>)}
+                  <div className="flex gap-2">
+                    <input required type="number" value={agendaForm.tgl} onChange={e => setAgendaForm({ ...agendaForm, tgl: e.target.value })} placeholder="Tgl" className="w-16 border border-gray-200 rounded-xl px-3 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                    <select value={agendaForm.bln} onChange={e => setAgendaForm({ ...agendaForm, bln: e.target.value })} className="flex-1 border border-gray-200 rounded-xl px-3 py-3 focus:ring-2 focus:ring-amber-400 outline-none">
+                      {['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'].map(m => <option key={m} value={m}>{m}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Waktu *</label>
-                    <div className="relative">
-                      <Clock className="absolute left-4 top-3.5 text-gray-400" size={18} />
-                      <input
-                        required
-                        type="text"
-                        value={agendaForm.time}
-                        onChange={e => setAgendaForm({ ...agendaForm, time: e.target.value })}
-                        placeholder="08:00"
-                        className="w-full border border-gray-200 rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none"
-                      />
-                    </div>
+                    <input required type="text" value={agendaForm.time} onChange={e => setAgendaForm({ ...agendaForm, time: e.target.value })} placeholder="Waktu (08:00)" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                  </div>
+                  <div>
+                    <input required type="text" value={agendaForm.penulis} onChange={e => setAgendaForm({ ...agendaForm, penulis: e.target.value })} placeholder="Penyelenggara" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                   </div>
                 </div>
 
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Deskripsi Detail Kegiatan *</label>
+                  <textarea required rows={4} value={agendaForm.deskripsi} onChange={e => setAgendaForm({ ...agendaForm, deskripsi: e.target.value })} placeholder="Tulis rincian kegiatan di sini agar otomatis jadi landing page..." className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none" />
+                </div>
+
                 <div className="flex gap-4">
-                  <button type="submit" className="flex-1 bg-amber-500 text-slate-900 font-black py-3 rounded-xl hover:bg-amber-400 transition-all">Simpan Agenda</button>
+                  <button type="submit" className="flex-1 bg-amber-500 text-slate-900 font-black py-3 rounded-xl hover:bg-amber-400 transition-all">Publikasikan Agenda</button>
                   <button type="button" onClick={() => setShowForm(null)} className="px-8 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200">Batal</button>
                 </div>
               </form>
@@ -565,20 +486,19 @@ export default function InformasiPage() {
           </h2>
           <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-2 overflow-hidden overflow-x-auto">
             <div className="flex gap-4 p-4 min-w-max">
-              {agendaList.map((agenda, i) => (
+              {agendaList.map((agenda) => (
                 <motion.div 
-                  key={i} 
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="w-64 flex gap-4 p-4 bg-gray-50 border border-gray-200 rounded-2xl hover:bg-amber-50 hover:border-amber-200 transition-all cursor-default"
+                  key={agenda.id} 
+                  whileHover={{ y: -5, borderColor: '#f59e0b' }}
+                  onClick={() => setSelectedAgenda(agenda)}
+                  className="w-64 flex gap-4 p-4 bg-gray-50 border border-gray-200 rounded-2xl transition-all cursor-pointer group"
                 >
-                  <div className="bg-white rounded-xl px-3 py-2 text-center shadow-sm border border-gray-100 h-fit min-w-[56px]">
+                  <div className="bg-white rounded-xl px-3 py-2 text-center shadow-sm border border-gray-100 h-fit min-w-[56px] group-hover:shadow-md transition-all">
                     <div className="text-2xl font-black text-amber-500 leading-none">{agenda.tgl}</div>
                     <div className="text-[10px] font-black text-gray-400 uppercase mt-1">{agenda.bln}</div>
                   </div>
                   <div className="flex-1 overflow-hidden">
-                    <div className="font-bold text-gray-800 text-sm leading-tight mb-2 truncate" title={agenda.title}>{agenda.title}</div>
+                    <div className="font-bold text-gray-800 text-sm leading-tight mb-2 truncate group-hover:text-amber-600 transition-colors">{agenda.title}</div>
                     <div className="space-y-1">
                       <div className="text-[10px] text-gray-500 flex items-center gap-1.5 font-medium">
                         <Clock size={10} className="text-amber-500" /> {agenda.time} WIB
@@ -598,64 +518,36 @@ export default function InformasiPage() {
         <h2 className="text-2xl font-black text-gray-800 mb-6 flex items-center gap-3">
           <Newspaper size={28} className="text-slate-800" /> Berita Terkini Gumelar
         </h2>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {beritaList.map((berita) => (
             <motion.div
               key={berita.id}
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
               whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
               onClick={() => setSelectedBerita(berita)}
               className="bg-white rounded-3xl shadow-sm border border-gray-100 cursor-pointer overflow-hidden group transition-all"
             >
-              {berita.gambar && (
-                <div className="h-48 overflow-hidden">
-                  <img src={berita.gambar} alt={berita.judul} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                </div>
-              )}
+              {berita.gambar && <div className="h-48 overflow-hidden"><img src={berita.gambar} alt={berita.judul} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /></div>}
               {!berita.gambar && berita.youtubeUrl && (
                 <div className="h-48 overflow-hidden relative bg-black flex items-center justify-center">
-                  <img
-                    src={`https://img.youtube.com/vi/${berita.youtubeUrl.split('/embed/')[1]}/hqdefault.jpg`}
-                    alt="YouTube"
-                    className="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                      <Play size={24} className="text-white ml-1" />
-                    </div>
-                  </div>
+                  <img src={`https://img.youtube.com/vi/${berita.youtubeUrl.split('/embed/')[1]}/hqdefault.jpg`} alt="YouTube" className="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 flex items-center justify-center"><div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform"><Play size={24} className="text-white ml-1" /></div></div>
                 </div>
               )}
-
               <div className="p-7">
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-wider ${kategoriWarna[berita.kategori] || 'bg-gray-100 text-gray-600'}`}>
-                    {berita.kategori}
-                  </span>
-                  <span className="flex items-center gap-1 text-[10px] text-gray-400 font-bold">
-                    <Eye size={12} /> {berita.views}
-                  </span>
+                  <span className={`text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-wider ${kategoriWarna[berita.kategori] || 'bg-gray-100 text-gray-600'}`}>{berita.kategori}</span>
+                  <span className="flex items-center gap-1 text-[10px] text-gray-400 font-bold"><Eye size={12} /> {berita.views}</span>
                 </div>
-                <h3 className="font-black text-gray-800 text-xl leading-tight mb-4 group-hover:text-amber-500 transition-colors">
-                  {berita.judul}
-                </h3>
+                <h3 className="font-black text-gray-800 text-xl leading-tight mb-4 group-hover:text-amber-500 transition-colors">{berita.judul}</h3>
                 <p className="text-sm text-gray-500 line-clamp-2 mb-6 leading-relaxed">{berita.konten}</p>
                 <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 pt-4 border-t border-gray-50">
-                  <div className="flex items-center gap-4">
-                    <span className="text-gray-700">✍️ {berita.penulis}</span>
-                    <span className="flex items-center gap-1.5"><Clock size={12} /> {berita.tanggal}</span>
-                  </div>
+                  <div className="flex items-center gap-4"><span className="text-gray-700">✍️ {berita.penulis}</span><span className="flex items-center gap-1.5"><Clock size={12} /> {berita.tanggal}</span></div>
                   <ChevronRight size={20} className="text-amber-500 group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
