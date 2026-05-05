@@ -20,6 +20,7 @@ export interface BeritaItem {
   tanggal: string;
   kategori: string;
   gambar?: string;
+  youtubeUrl?: string;
   views: number;
 }
 

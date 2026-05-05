@@ -12,8 +12,13 @@ export default function Footer({ setActivePage }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <div className="text-3xl font-black mb-2">
-              GUMELAR<span className="text-amber-400">.ID</span>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-white overflow-hidden p-0.5 shadow-lg">
+                <img src="/logo.png" alt="Logo Gumelar" className="w-full h-full object-contain" />
+              </div>
+              <div className="text-3xl font-black">
+                GUMELAR<span className="text-amber-400">.ID</span>
+              </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
               Ruang Kreatif Masyarakat Gumelar dan Sekitarnya — portal digital komunitas yang lahir dari semangat gotong royong.

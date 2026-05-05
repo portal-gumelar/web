@@ -39,8 +39,8 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
             onClick={() => handleNav('home')}
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-              <span className="text-slate-900 font-black text-sm">G</span>
+            <div className="w-10 h-10 rounded-full bg-white overflow-hidden shadow-md group-hover:scale-110 transition-transform flex items-center justify-center p-0.5">
+              <img src="/logo.png" alt="Logo Gumelar" className="w-full h-full object-contain" />
             </div>
             <div className="text-left">
               <div className="text-white font-black text-lg leading-none tracking-wide">GUMELAR.ID</div>
