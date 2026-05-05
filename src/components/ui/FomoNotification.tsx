@@ -4,13 +4,16 @@ import { Bell, Eye, CheckCircle2, UserCheck } from 'lucide-react';
 
 // Random mock messages for the FOMO notifications
 const FOMO_MESSAGES = [
-  { text: "12 orang sedang melihat portal ini", icon: Eye, color: "text-blue-500", bg: "bg-blue-100" },
-  { text: "Budi dari RW 02 baru saja mendaftar member", icon: UserCheck, color: "text-green-500", bg: "bg-green-100" },
-  { text: "Siti sedang melihat halaman Info Jasa", icon: Eye, color: "text-purple-500", bg: "bg-purple-100" },
-  { text: "Pak Kades baru saja mengunggah Berita Baru", icon: Bell, color: "text-yellow-500", bg: "bg-yellow-100" },
-  { text: "Warga Gumelar baru saja mengunduh Form Surat", icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-100" },
-  { text: "5 orang online di halaman Transparansi", icon: Eye, color: "text-indigo-500", bg: "bg-indigo-100" },
-  { text: "Donasi kopi baru saja diterima! ☕", icon: Bell, color: "text-orange-500", bg: "bg-orange-100" }
+  { text: "Ahmad dari Purwokerto baru saja membuka portal ini", icon: Eye, color: "text-blue-500", bg: "bg-blue-100" },
+  { text: "Siti baru saja mendaftar jadi member Gumelar.ID", icon: UserCheck, color: "text-green-500", bg: "bg-green-100" },
+  { text: "Rizki dari Cilacap sedang melihat Info Jasa", icon: Eye, color: "text-purple-500", bg: "bg-purple-100" },
+  { text: "Dewi baru saja mengajukan E-Surat secara online", icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-100" },
+  { text: "Andi dari Jakarta membuka halaman UMKM Gumelar", icon: Eye, color: "text-indigo-500", bg: "bg-indigo-100" },
+  { text: "Nurul baru saja memberikan donasi Sruput Kopi ☕", icon: Bell, color: "text-orange-500", bg: "bg-orange-100" },
+  { text: "Fajar dari Ajibarang sedang melihat Ruang Kreatif", icon: Eye, color: "text-pink-500", bg: "bg-pink-100" },
+  { text: "Hasan baru saja melihat Transparansi Dana Desa", icon: Bell, color: "text-yellow-600", bg: "bg-yellow-100" },
+  { text: "Rina dari Banyumas tertarik dengan produk UMKM lokal", icon: Eye, color: "text-blue-600", bg: "bg-blue-100" },
+  { text: "Doni baru saja menghubungi penjual via WhatsApp", icon: CheckCircle2, color: "text-teal-500", bg: "bg-teal-100" },
 ];
 
 export default function FomoNotification() {
