@@ -69,4 +69,6 @@ export type ActivePage =
   | 'buat-cv'
   | 'donasi'
   | 'surat-online'
-  | 'transparansi';
+  | 'transparansi'
+  | 'qr-code'
+  | 'image-optimizer';

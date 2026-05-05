@@ -9,6 +9,8 @@ import InfoJasaPage from './pages/InfoJasaPage';
 import LayananPage from './pages/LayananPage';
 import CompressPdfPage from './pages/CompressPdfPage';
 import BuatCVPage from './pages/BuatCVPage';
+import QRCodePage from './pages/QRCodePage';
+import ImageOptimizerPage from './pages/ImageOptimizerPage';
 import DonasiPage from './pages/DonasiPage';
 import DaftarMemberPage from './pages/DaftarMemberPage';
 import SuratOnlinePage from './pages/SuratOnlinePage';
@@ -42,6 +44,10 @@ export default function App() {
         return <CompressPdfPage />;
       case 'buat-cv':
         return <BuatCVPage />;
+      case 'qr-code':
+        return <QRCodePage />;
+      case 'image-optimizer':
+        return <ImageOptimizerPage />;
       case 'donasi':
         return <DonasiPage />;
       case 'daftar-member':
