@@ -12,6 +12,15 @@ export interface Member {
   avatar?: string;
 }
 
+export interface Comment {
+  id: string;
+  penulis: string;
+  konten: string;
+  tanggal: string;
+  isAdmin?: boolean;
+  balasan?: Comment[];
+}
+
 export interface BeritaItem {
   id: string;
   judul: string;
@@ -22,6 +31,7 @@ export interface BeritaItem {
   gambar?: string;
   youtubeUrl?: string;
   views: number;
+  komentar?: Comment[];
 }
 
 export interface KaryaItem {
