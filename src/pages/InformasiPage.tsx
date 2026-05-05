@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image, Youtube, X } from 'lucide-react';
+import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image, Play, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockBerita } from '../data/mockData';
 import { BeritaItem } from '../types';
@@ -279,7 +279,7 @@ export default function InformasiPage() {
                 {/* Link YouTube */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    <Youtube size={14} className="inline mr-1 text-red-500" />
+                    <Play size={14} className="inline mr-1 text-red-500" />
                     Link Video YouTube (Opsional)
                   </label>
                   <input
@@ -388,7 +388,7 @@ export default function InformasiPage() {
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-xl">
-                      <Youtube size={22} className="text-white ml-0.5" />
+                      <Play size={22} className="text-white ml-0.5" />
                     </div>
                   </div>
                 </div>
