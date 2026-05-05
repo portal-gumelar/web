@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin, User, Info } from 'lucide-react';
+import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image as ImageIcon, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin, User, Info, Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockBerita } from '../data/mockData';
 import { BeritaItem, Comment, AgendaItem } from '../types';
@@ -85,10 +85,7 @@ export default function InformasiPage() {
       komentar: [],
     };
     setBeritaList([newBerita, ...beritaList]);
-    setForm({ judul: '', konten: '', penulis: '', kategori: 'Umum', youtubeUrl: '' });
-    setFotoPreview(null);
-    setFotoFile(null);
-    setShowForm(null);
+    resetForm();
   };
 
   const handleSubmitAgenda = (e: React.FormEvent) => {
@@ -96,9 +93,17 @@ export default function InformasiPage() {
     const newAgenda: AgendaItem = {
       ...agendaForm,
       id: Date.now().toString(),
+      gambar: fotoPreview || undefined,
     };
     setAgendaList([newAgenda, ...agendaList]);
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setForm({ judul: '', konten: '', penulis: '', kategori: 'Umum', youtubeUrl: '' });
     setAgendaForm({ title: '', tgl: '', bln: 'Mei', time: '', loc: '', deskripsi: '', penulis: '' });
+    setFotoPreview(null);
+    setFotoFile(null);
     setShowForm(null);
   };
 
@@ -159,31 +164,65 @@ export default function InformasiPage() {
             className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-amber-100"
           >
             {/* Header Banner */}
-            <div className="bg-gradient-to-br from-amber-500 to-amber-600 p-8 sm:p-12 text-white relative">
-              <div className="absolute top-0 right-0 p-10 opacity-10">
-                <Calendar size={180} />
-              </div>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="bg-white text-amber-600 rounded-2xl px-5 py-3 text-center shadow-lg">
-                  <div className="text-4xl font-black leading-none">{selectedAgenda.tgl}</div>
-                  <div className="text-sm font-bold uppercase tracking-widest mt-1">{selectedAgenda.bln}</div>
-                </div>
-                <div className="bg-white/20 backdrop-blur-md rounded-full px-4 py-1 text-xs font-bold uppercase tracking-wider">
-                  Agenda Desa
-                </div>
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-black leading-tight mb-6">{selectedAgenda.title}</h1>
-              <div className="flex flex-wrap gap-6 text-sm font-medium">
-                <div className="flex items-center gap-2 bg-black/10 rounded-xl px-4 py-2">
-                  <Clock size={18} /> {selectedAgenda.time} WIB
-                </div>
-                <div className="flex items-center gap-2 bg-black/10 rounded-xl px-4 py-2">
-                  <MapPin size={18} /> {selectedAgenda.loc}
-                </div>
-              </div>
+            <div className={`relative ${selectedAgenda.gambar ? 'h-64 sm:h-80' : 'bg-gradient-to-br from-amber-500 to-amber-600 p-8 sm:p-12'} text-white`}>
+              {selectedAgenda.gambar ? (
+                <>
+                  <img src={selectedAgenda.gambar} className="w-full h-full object-cover" alt={selectedAgenda.title} />
+                  <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-8 sm:p-10">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="bg-white text-amber-600 rounded-2xl px-4 py-2 text-center shadow-lg">
+                        <div className="text-3xl font-black leading-none">{selectedAgenda.tgl}</div>
+                        <div className="text-[10px] font-bold uppercase mt-0.5">{selectedAgenda.bln}</div>
+                      </div>
+                      <div className="bg-amber-500 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-wider">
+                        Agenda Desa
+                      </div>
+                    </div>
+                    <h1 className="text-2xl sm:text-4xl font-black leading-tight drop-shadow-lg">{selectedAgenda.title}</h1>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="absolute top-0 right-0 p-10 opacity-10">
+                    <Calendar size={180} />
+                  </div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-white text-amber-600 rounded-2xl px-5 py-3 text-center shadow-lg">
+                      <div className="text-4xl font-black leading-none">{selectedAgenda.tgl}</div>
+                      <div className="text-sm font-bold uppercase tracking-widest mt-1">{selectedAgenda.bln}</div>
+                    </div>
+                    <div className="bg-white/20 backdrop-blur-md rounded-full px-4 py-1 text-xs font-bold uppercase tracking-wider">
+                      Agenda Desa
+                    </div>
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl font-black leading-tight mb-6">{selectedAgenda.title}</h1>
+                </>
+              )}
             </div>
 
             <div className="p-8 sm:p-12">
+              {/* Event Meta Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 -mt-20 relative z-10">
+                <div className="bg-white rounded-2xl p-4 shadow-xl border border-gray-50 flex items-center gap-4">
+                  <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center">
+                    <Clock size={24} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-gray-400 font-bold uppercase">Waktu</div>
+                    <div className="text-gray-800 font-bold">{selectedAgenda.time} WIB</div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-2xl p-4 shadow-xl border border-gray-50 flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-gray-400 font-bold uppercase">Lokasi</div>
+                    <div className="text-gray-800 font-bold">{selectedAgenda.loc}</div>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex items-center gap-3 mb-8 pb-6 border-b border-gray-100">
                 <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
                   <User size={20} />
@@ -201,14 +240,14 @@ export default function InformasiPage() {
                 <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-wrap">{selectedAgenda.deskripsi}</p>
               </div>
 
-              <div className="bg-blue-50 border border-blue-100 rounded-3xl p-6 flex items-start gap-4">
-                <div className="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white shadow-lg flex-shrink-0">
+              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex items-start gap-4 text-white">
+                <div className="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center text-slate-900 shadow-lg flex-shrink-0">
                   <Calendar size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-blue-900 mb-1">Simpan Tanggal Ini!</h4>
-                  <p className="text-sm text-blue-700 leading-relaxed">
-                    Jangan lupa hadir tepat waktu di <strong>{selectedAgenda.loc}</strong> pada jam <strong>{selectedAgenda.time} WIB</strong>. Kehadiran Anda sangat berarti bagi kemajuan desa.
+                  <h4 className="font-bold text-amber-400 mb-1">Penting!</h4>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    Pastikan hadir tepat waktu di <strong>{selectedAgenda.loc}</strong>. Mari kita sukseskan kegiatan ini bersama-sama demi kemajuan desa kita tercinta.
                   </p>
                 </div>
               </div>
@@ -281,37 +320,23 @@ export default function InformasiPage() {
 
               {/* Comment Section */}
               <div className="mt-16 pt-10 border-t border-gray-100">
-                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-2xl font-black text-gray-800 flex items-center gap-3">
-                    <MessageSquare className="text-amber-500" />
-                    Komentar <span className="text-gray-400 font-medium text-lg">({(selectedBerita.komentar?.length || 0) + (selectedBerita.komentar?.reduce((acc, c) => acc + (c.balasan?.length || 0), 0) || 0)})</span>
-                  </h3>
-                  
-                  <button 
-                    onClick={() => setIsAdminMode(!isAdminMode)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
-                      isAdminMode ? 'bg-slate-800 text-white' : 'bg-gray-100 text-gray-400'
-                    }`}
-                  >
-                    <ShieldCheck size={14} />
-                    {isAdminMode ? 'Mode Admin Aktif' : 'Login Admin'}
-                  </button>
-                </div>
+                <h3 className="text-2xl font-black text-gray-800 flex items-center gap-3 mb-8">
+                  <MessageSquare className="text-amber-500" />
+                  Komentar
+                </h3>
 
                 <div className="bg-gray-50 rounded-2xl p-6 mb-10 border border-gray-100">
                   <form onSubmit={handleAddComment} className="space-y-4">
-                    {!isAdminMode && (
-                      <input
-                        type="text"
-                        placeholder="Nama Anda..."
-                        value={commentForm.penulis}
-                        onChange={e => setCommentForm({ ...commentForm, penulis: e.target.value })}
-                        className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                      />
-                    )}
+                    <input
+                      type="text"
+                      placeholder="Nama Anda..."
+                      value={commentForm.penulis}
+                      onChange={e => setCommentForm({ ...commentForm, penulis: e.target.value })}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    />
                     <textarea
                       required
-                      placeholder={replyTarget ? "Tulis balasan Anda..." : "Apa pendapat Anda?"}
+                      placeholder="Apa pendapat Anda?"
                       rows={3}
                       value={commentForm.konten}
                       onChange={e => setCommentForm({ ...commentForm, konten: e.target.value })}
@@ -321,11 +346,9 @@ export default function InformasiPage() {
                       <motion.button
                         whileTap={{ scale: 0.98 }}
                         type="submit"
-                        className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all ${
-                          isAdminMode ? 'bg-slate-800 text-white' : 'bg-amber-500 text-slate-900'
-                        }`}
+                        className="flex items-center gap-2 px-6 py-2.5 bg-amber-500 text-slate-900 rounded-xl font-bold text-sm shadow-md"
                       >
-                        <Send size={16} /> Kirim
+                        <Send size={16} /> Kirim Komentar
                       </motion.button>
                     </div>
                   </form>
@@ -359,7 +382,7 @@ export default function InformasiPage() {
             Berita & <span className="text-blue-700">Informasi</span>
           </h1>
           <div className="w-16 h-1 bg-amber-400 mx-auto rounded-full mb-4" />
-          <p className="text-gray-500">Informasi terkini dari dan untuk masyarakat Gumelar</p>
+          <p className="text-gray-500">Portal berita dan agenda kegiatan masyarakat Gumelar</p>
         </motion.div>
 
         {/* Buttons to open forms */}
@@ -367,7 +390,7 @@ export default function InformasiPage() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowForm(showForm === 'berita' ? null : 'berita')}
+            onClick={() => { setShowForm(showForm === 'berita' ? null : 'berita'); setFotoPreview(null); }}
             className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold shadow-lg transition-all ${
               showForm === 'berita' ? 'bg-red-500 text-white' : 'bg-slate-800 text-white hover:bg-slate-700'
             }`}
@@ -379,7 +402,7 @@ export default function InformasiPage() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowForm(showForm === 'agenda' ? null : 'agenda')}
+            onClick={() => { setShowForm(showForm === 'agenda' ? null : 'agenda'); setFotoPreview(null); }}
             className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold shadow-lg transition-all ${
               showForm === 'agenda' ? 'bg-red-500 text-white' : 'bg-amber-500 text-slate-900 hover:bg-amber-400'
             }`}
@@ -404,24 +427,30 @@ export default function InformasiPage() {
               </h3>
               <form onSubmit={handleSubmitBerita} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Judul Berita *</label>
-                    <input required type="text" value={form.judul} onChange={e => setForm({ ...form, judul: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
-                    <select value={form.kategori} onChange={e => setForm({ ...form, kategori: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none">
-                      {['Umum', 'Pertanian', 'Ekonomi', 'Budaya', 'Infrastruktur'].map(k => <option key={k} value={k}>{k}</option>)}
-                    </select>
-                  </div>
+                  <input required type="text" value={form.judul} onChange={e => setForm({ ...form, judul: e.target.value })} placeholder="Judul Berita *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                  <select value={form.kategori} onChange={e => setForm({ ...form, kategori: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none">
+                    {['Umum', 'Pertanian', 'Ekonomi', 'Budaya', 'Infrastruktur'].map(k => <option key={k} value={k}>{k}</option>)}
+                  </select>
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <input required type="text" value={form.penulis} onChange={e => setForm({ ...form, penulis: e.target.value })} placeholder="Nama Penulis *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                  <input type="url" value={form.youtubeUrl} onChange={e => setForm({ ...form, youtubeUrl: e.target.value })} placeholder="Link YouTube (Opsional)" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-400 outline-none" />
+                </div>
+                <textarea required rows={6} value={form.konten} onChange={e => setForm({ ...form, konten: e.target.value })} placeholder="Isi Berita *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none" />
+                
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Isi Berita *</label>
-                  <textarea required rows={6} value={form.konten} onChange={e => setForm({ ...form, konten: e.target.value })} className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none" />
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Unggah Foto Utama</label>
+                  <label className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-2xl py-8 hover:border-amber-400 cursor-pointer transition-all bg-gray-50 group">
+                    <Camera className="text-gray-400 group-hover:text-amber-500" />
+                    <span className="text-sm text-gray-500 font-bold">Pilih Foto Berita</span>
+                    <input type="file" accept="image/*" onChange={handleFotoChange} className="hidden" />
+                  </label>
+                  {fotoPreview && <div className="mt-4 relative inline-block"><img src={fotoPreview} className="h-32 rounded-xl border-2 border-amber-400 shadow-lg" /><button onClick={() => setFotoPreview(null)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-lg"><X size={12} /></button></div>}
                 </div>
+
                 <div className="flex gap-4">
-                  <button type="submit" className="flex-1 bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-700 transition-all">Publikasikan Berita</button>
-                  <button type="button" onClick={() => setShowForm(null)} className="px-8 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200">Batal</button>
+                  <button type="submit" className="flex-1 bg-slate-800 text-white font-bold py-4 rounded-2xl hover:bg-slate-700 transition-all shadow-lg">Publikasikan Berita</button>
+                  <button type="button" onClick={() => setShowForm(null)} className="px-8 bg-gray-100 text-gray-600 font-bold py-4 rounded-2xl hover:bg-gray-200 transition-all">Batal</button>
                 </div>
               </form>
             </motion.div>
@@ -436,43 +465,40 @@ export default function InformasiPage() {
               className="bg-white rounded-3xl shadow-xl border border-amber-100 p-8 mb-12 overflow-hidden"
             >
               <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2">
-                <Calendar className="text-amber-500" /> Buat Agenda Desa (Landing Page Otomatis)
+                <Calendar className="text-amber-500" /> Buat Agenda Desa (Landing Page)
               </h3>
               <form onSubmit={handleSubmitAgenda} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Nama Kegiatan *</label>
-                    <input required type="text" value={agendaForm.title} onChange={e => setAgendaForm({ ...agendaForm, title: e.target.value })} placeholder="Contoh: Rapat RT 01" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Lokasi *</label>
-                    <input required type="text" value={agendaForm.loc} onChange={e => setAgendaForm({ ...agendaForm, loc: e.target.value })} placeholder="Contoh: Balai Desa" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
-                  </div>
+                  <input required type="text" value={agendaForm.title} onChange={e => setAgendaForm({ ...agendaForm, title: e.target.value })} placeholder="Nama Kegiatan *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                  <input required type="text" value={agendaForm.loc} onChange={e => setAgendaForm({ ...agendaForm, loc: e.target.value })} placeholder="Lokasi (Contoh: Balai Desa) *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div className="flex gap-2">
-                    <input required type="number" value={agendaForm.tgl} onChange={e => setAgendaForm({ ...agendaForm, tgl: e.target.value })} placeholder="Tgl" className="w-16 border border-gray-200 rounded-xl px-3 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                    <input required type="number" value={agendaForm.tgl} onChange={e => setAgendaForm({ ...agendaForm, tgl: e.target.value })} placeholder="Tgl" className="w-20 border border-gray-200 rounded-xl px-3 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                     <select value={agendaForm.bln} onChange={e => setAgendaForm({ ...agendaForm, bln: e.target.value })} className="flex-1 border border-gray-200 rounded-xl px-3 py-3 focus:ring-2 focus:ring-amber-400 outline-none">
                       {['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'].map(m => <option key={m} value={m}>{m}</option>)}
                     </select>
                   </div>
-                  <div>
-                    <input required type="text" value={agendaForm.time} onChange={e => setAgendaForm({ ...agendaForm, time: e.target.value })} placeholder="Waktu (08:00)" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
-                  </div>
-                  <div>
-                    <input required type="text" value={agendaForm.penulis} onChange={e => setAgendaForm({ ...agendaForm, penulis: e.target.value })} placeholder="Penyelenggara" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
-                  </div>
+                  <input required type="text" value={agendaForm.time} onChange={e => setAgendaForm({ ...agendaForm, time: e.target.value })} placeholder="Waktu (WIB) *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
+                  <input required type="text" value={agendaForm.penulis} onChange={e => setAgendaForm({ ...agendaForm, penulis: e.target.value })} placeholder="Penyelenggara *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none" />
                 </div>
 
+                <textarea required rows={4} value={agendaForm.deskripsi} onChange={e => setAgendaForm({ ...agendaForm, deskripsi: e.target.value })} placeholder="Rincian Kegiatan (Akan muncul di Landing Page) *" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none" />
+
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Deskripsi Detail Kegiatan *</label>
-                  <textarea required rows={4} value={agendaForm.deskripsi} onChange={e => setAgendaForm({ ...agendaForm, deskripsi: e.target.value })} placeholder="Tulis rincian kegiatan di sini agar otomatis jadi landing page..." className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-400 outline-none resize-none" />
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Unggah Foto Kegiatan / Poster</label>
+                  <label className="flex items-center justify-center gap-2 border-2 border-dashed border-amber-200 rounded-2xl py-8 hover:border-amber-400 cursor-pointer transition-all bg-amber-50 group">
+                    <ImageIcon className="text-amber-400 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm text-amber-700 font-bold">Pilih Poster / Foto Agenda</span>
+                    <input type="file" accept="image/*" onChange={handleFotoChange} className="hidden" />
+                  </label>
+                  {fotoPreview && <div className="mt-4 relative inline-block"><img src={fotoPreview} className="h-32 rounded-xl border-2 border-amber-400 shadow-lg" /><button onClick={() => setFotoPreview(null)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-lg"><X size={12} /></button></div>}
                 </div>
 
                 <div className="flex gap-4">
-                  <button type="submit" className="flex-1 bg-amber-500 text-slate-900 font-black py-3 rounded-xl hover:bg-amber-400 transition-all">Publikasikan Agenda</button>
-                  <button type="button" onClick={() => setShowForm(null)} className="px-8 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200">Batal</button>
+                  <button type="submit" className="flex-1 bg-amber-500 text-slate-900 font-black py-4 rounded-2xl hover:bg-amber-400 transition-all shadow-lg">Publikasikan Agenda</button>
+                  <button type="button" onClick={() => setShowForm(null)} className="px-8 bg-gray-100 text-gray-600 font-bold py-4 rounded-2xl hover:bg-gray-200 transition-all">Batal</button>
                 </div>
               </form>
             </motion.div>
@@ -538,7 +564,7 @@ export default function InformasiPage() {
                   <span className={`text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-wider ${kategoriWarna[berita.kategori] || 'bg-gray-100 text-gray-600'}`}>{berita.kategori}</span>
                   <span className="flex items-center gap-1 text-[10px] text-gray-400 font-bold"><Eye size={12} /> {berita.views}</span>
                 </div>
-                <h3 className="font-black text-gray-800 text-xl leading-tight mb-4 group-hover:text-amber-500 transition-colors">{berita.judul}</h3>
+                <h3 className="font-black text-gray-800 text-xl leading-tight mb-4 group-hover:text-amber-600 transition-colors">{berita.judul}</h3>
                 <p className="text-sm text-gray-500 line-clamp-2 mb-6 leading-relaxed">{berita.konten}</p>
                 <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 pt-4 border-t border-gray-50">
                   <div className="flex items-center gap-4"><span className="text-gray-700">✍️ {berita.penulis}</span><span className="flex items-center gap-1.5"><Clock size={12} /> {berita.tanggal}</span></div>

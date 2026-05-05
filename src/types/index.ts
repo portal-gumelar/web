@@ -43,6 +43,7 @@ export interface AgendaItem {
   loc: string;
   deskripsi: string;
   penulis: string;
+  gambar?: string;
 }
 
 export interface KaryaItem {
