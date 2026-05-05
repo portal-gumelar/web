@@ -57,6 +57,11 @@ export interface KaryaItem {
   likes: number;
 }
 
+export interface User {
+  name: string;
+  role: 'admin' | 'member' | 'guest';
+}
+
 export type ActivePage = 
   | 'home' 
   | 'tentang' 
@@ -71,4 +76,5 @@ export type ActivePage =
   | 'surat-online'
   | 'transparansi'
   | 'qr-code'
-  | 'image-optimizer';
+  | 'image-optimizer'
+  | 'login';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image as ImageIcon, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin, User, Info, Camera, Share2, Facebook, Twitter, Link as LinkIcon } from 'lucide-react';
+import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image as ImageIcon, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin, User, Info, Camera, Share2, Link as LinkIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockBerita } from '../data/mockData';
 import { BeritaItem, Comment, AgendaItem } from '../types';
@@ -178,7 +178,7 @@ export default function InformasiPage() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-500 transition-all shadow-md"
           >
-            <Facebook size={16} /> Facebook
+            Facebook
           </a>
           <a 
             href={`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(shareUrl)}`} 
@@ -186,7 +186,7 @@ export default function InformasiPage() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-xl text-sm font-bold hover:bg-slate-700 transition-all shadow-md"
           >
-            <Twitter size={16} /> Twitter
+            Twitter
           </a>
           <button 
             onClick={handleCopy}

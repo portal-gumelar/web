@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Menu, X, Coffee, Home, Info, Newspaper, Palette, Briefcase, Star, PieChart } from 'lucide-react';
-import { ActivePage } from '../../types';
+import { Menu, X, Coffee, Home, Info, Newspaper, Palette, Briefcase, Star, PieChart, LogIn, User, LogOut } from 'lucide-react';
+import { ActivePage, User as UserType } from '../../types';
 
 interface NavbarProps {
   activePage: ActivePage;
   setActivePage: (page: ActivePage) => void;
+  user: UserType | null;
+  onLogout: () => void;
 }
 
 const navItems = [
@@ -17,8 +19,9 @@ const navItems = [
   { id: 'layanan' as ActivePage, label: 'Layanan Member', icon: Star },
 ];
 
-export default function Navbar({ activePage, setActivePage }: NavbarProps) {
+export default function Navbar({ activePage, setActivePage, user, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleNav = (page: ActivePage) => {
     setActivePage(page);
@@ -32,7 +35,7 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
         ⚠️ DISCLAIMER: NO POLITIK · NO SARA · Informasi menjadi tanggung jawab penulis
       </div>
 
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-[90rem] mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button
@@ -42,14 +45,14 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
             <div className="w-10 h-10 rounded-full bg-white overflow-hidden shadow-md group-hover:scale-110 transition-transform flex items-center justify-center p-0.5">
               <img src="/logo.png" alt="Logo Gumelar" className="w-full h-full object-contain" />
             </div>
-            <div className="text-left">
+            <div className="text-left hidden sm:block">
               <div className="text-white font-black text-lg leading-none tracking-wide">GUMELAR.ID</div>
-              <div className="text-slate-400 text-xs leading-none">Ruang Kreatif Masyarakat</div>
+              <div className="text-slate-400 text-[10px] leading-none uppercase tracking-widest mt-0.5">Ruang Kreatif</div>
             </div>
           </button>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -67,70 +70,136 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
                 </button>
               );
             })}
+          </div>
 
-            {/* Donasi Button */}
+          {/* Right Actions */}
+          <div className="hidden lg:flex items-center gap-2">
             <button
               onClick={() => handleNav('donasi')}
-              className="ml-2 flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-full text-sm font-bold shadow-md transition-all duration-200 hover:scale-105"
+              className="flex items-center gap-1.5 px-4 py-2 bg-amber-500/10 hover:bg-amber-500 text-amber-500 hover:text-slate-900 border border-amber-500/30 rounded-full text-xs font-bold transition-all duration-200"
             >
-              <Coffee size={14} />
-              Sruput Kopi
+              <Coffee size={14} /> Sruput Kopi
             </button>
 
-            {/* Daftar Member */}
-            <button
-              onClick={() => handleNav('daftar-member')}
-              className="ml-1 flex items-center gap-1.5 px-4 py-2 bg-white text-slate-800 rounded-full text-sm font-bold shadow-md transition-all duration-200 hover:scale-105 hover:bg-slate-100"
-            >
-              Daftar Member
-            </button>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 pl-2 pr-4 py-1.5 bg-slate-800 text-white rounded-full border border-slate-700 hover:bg-slate-700 transition-all"
+                >
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="text-left">
+                    <div className="text-[10px] font-bold leading-none truncate max-w-[80px]">{user.name}</div>
+                    <div className="text-[8px] text-slate-400 uppercase tracking-widest">{user.role}</div>
+                  </div>
+                </button>
+                
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Akun Saya</p>
+                      <p className="text-sm font-black text-gray-800 truncate">{user.name}</p>
+                    </div>
+                    <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                      <User size={16} /> Profil Member
+                    </button>
+                    <button
+                      onClick={() => { onLogout(); setShowUserMenu(false); }}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut size={16} /> Keluar Aplikasi
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => handleNav('login')}
+                className="flex items-center gap-1.5 px-6 py-2 bg-white text-slate-900 rounded-full text-xs font-black shadow-lg hover:shadow-xl hover:bg-slate-100 transition-all"
+              >
+                <LogIn size={14} /> MASUK
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white p-2 rounded-lg hover:bg-slate-700 transition-colors"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex lg:hidden items-center gap-2">
+             {!user && (
+              <button
+                onClick={() => handleNav('login')}
+                className="px-4 py-1.5 bg-amber-500 text-slate-900 rounded-full text-[10px] font-black shadow-md"
+              >
+                MASUK
+              </button>
+            )}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white p-2 rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-slate-900 border-t border-slate-700 shadow-xl">
-          <div className="px-4 py-3 space-y-1">
+        <div className="lg:hidden bg-slate-900 border-t border-slate-700 shadow-xl max-h-[80vh] overflow-y-auto">
+          <div className="px-4 py-5 space-y-2">
+            {user && (
+              <div className="flex items-center gap-4 p-4 bg-slate-800 rounded-2xl mb-4">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-black ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="text-white font-black">{user.name}</h3>
+                  <p className="text-slate-400 text-xs uppercase tracking-widest">{user.role}</p>
+                </div>
+              </div>
+            )}
+            
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNav(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                     activePage === item.id
                       ? 'bg-amber-400 text-slate-900'
-                      : 'text-slate-300 hover:bg-slate-700'
+                      : 'text-slate-300 hover:bg-slate-800'
                   }`}
                 >
-                  <Icon size={16} />
+                  <Icon size={18} />
                   {item.label}
                 </button>
               );
             })}
-            <div className="pt-2 flex flex-col gap-2">
+            
+            <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
               <button
                 onClick={() => handleNav('donasi')}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-amber-500 text-slate-900 rounded-xl font-bold"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-amber-500 text-slate-900 rounded-xl font-black shadow-lg shadow-amber-500/20"
               >
-                <Coffee size={16} />
-                Donasi Sruput Kopi
+                <Coffee size={18} /> Donasi Sruput Kopi
               </button>
-              <button
-                onClick={() => handleNav('daftar-member')}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white text-slate-800 rounded-xl font-bold"
-              >
-                Daftar Member
-              </button>
+              {user ? (
+                 <button
+                  onClick={onLogout}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600/10 text-red-500 border border-red-600/30 rounded-xl font-black"
+                >
+                  <LogOut size={18} /> Keluar Aplikasi
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleNav('daftar-member')}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white text-slate-900 rounded-xl font-black shadow-lg"
+                >
+                  <User size={18} /> Daftar Member
+                </button>
+              )}
             </div>
           </div>
         </div>

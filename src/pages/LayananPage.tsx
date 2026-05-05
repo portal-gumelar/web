@@ -1,4 +1,4 @@
-import { Star, FileText, FileCheck, FileSignature, QrCode, ImageIcon } from 'lucide-react';
+import { Star, FileText, FileCheck, FileSignature, QrCode, Image as ImageIcon } from 'lucide-react';
 import { ActivePage } from '../types';
 
 interface LayananPageProps {
