@@ -146,7 +146,7 @@ export const mockBerita: BeritaItem[] = [
     id: '5',
     judul: 'Pembagian Bibit Kopi Gratis untuk Kelompok Tani',
     konten: 'Pemerintah Desa Gumelar bekerja sama dengan Dinas Pertanian Kabupaten membagikan 5000 bibit kopi robusta gratis. Program ini diharapkan dapat meningkatkan produktivitas hasil perkebunan kopi di lahan warga serta mendukung UMKM kopi lokal di masa mendatang.',
-    penulis: 'Admin Desa',
+    penulis: 'Admin GUMELAR.ID',
     tanggal: '2025-04-02',
     kategori: 'Pertanian',
     views: 150,

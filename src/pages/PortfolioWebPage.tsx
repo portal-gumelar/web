@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Globe, ExternalLink, Monitor, Smartphone, Tablet, CheckCircle2, Coffee, ArrowRight } from 'lucide-react';
+import { Globe, ExternalLink, Monitor, Smartphone, Tablet, CheckCircle2, ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface PortfolioItem {
   id: string;
@@ -61,6 +62,7 @@ const portfolioData: PortfolioItem[] = [
 ];
 
 export default function PortfolioWebPage() {
+  const navigate = useNavigate();
   const [selectedKategori, setSelectedKategori] = useState<string>('Semua');
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
   
@@ -88,6 +90,19 @@ export default function PortfolioWebPage() {
     <div className="min-h-screen bg-white pt-24 pb-20 px-4">
       <div className="max-w-6xl mx-auto">
         
+        {/* Back Button */}
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={() => navigate('/layanan')}
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold mb-10 group transition-all"
+        >
+          <div className="p-2 bg-slate-100 rounded-xl group-hover:bg-amber-100 group-hover:text-amber-700 transition-all">
+            <ArrowLeft size={20} />
+          </div>
+          Kembali ke Layanan
+        </motion.button>
+
         {/* Header Section */}
         <div className="text-center mb-16">
           <motion.div 
@@ -267,8 +282,27 @@ export default function PortfolioWebPage() {
                   </div>
                 </div>
 
-                {/* The Form */}
-                <form onSubmit={handleFormSubmit} className="space-y-5 bg-white p-8 md:p-10 rounded-[2.5rem] shadow-2xl">
+                {/* The Form with Login Check */}
+                <div className="relative">
+                  {!localStorage.getItem('currentUser') && (
+                    <div className="absolute inset-0 z-20 backdrop-blur-md bg-slate-900/60 rounded-[2.5rem] flex flex-col items-center justify-center p-8 text-center border border-white/10">
+                      <div className="w-16 h-16 bg-amber-400 rounded-full flex items-center justify-center mb-6 shadow-2xl animate-bounce">
+                        <Lock size={32} className="text-slate-900" />
+                      </div>
+                      <h4 className="text-white text-2xl font-black mb-4">Akses Khusus Member</h4>
+                      <p className="text-slate-300 mb-8 max-w-xs">
+                        Silakan masuk ke akun Member Anda untuk dapat mengisi formulir pengajuan konsep web.
+                      </p>
+                      <button 
+                        onClick={() => navigate('/login')}
+                        className="px-8 py-4 bg-amber-400 text-slate-900 font-black rounded-2xl hover:scale-105 transition-all shadow-xl"
+                      >
+                        Masuk Sekarang
+                      </button>
+                    </div>
+                  )}
+                  
+                  <form onSubmit={handleFormSubmit} className={`space-y-5 bg-white p-8 md:p-10 rounded-[2.5rem] shadow-2xl transition-all ${!localStorage.getItem('currentUser') ? 'opacity-20 blur-sm pointer-events-none' : ''}`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Nama Usaha / Brand *</label>
@@ -346,7 +380,8 @@ export default function PortfolioWebPage() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* CTA Section (Original) */}
 

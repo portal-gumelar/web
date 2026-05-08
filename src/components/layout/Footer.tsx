@@ -1,96 +1,132 @@
-import { Coffee } from 'lucide-react';
-import { ActivePage } from '../../types';
+import { Coffee, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface FooterProps {
-  setActivePage: (page: ActivePage) => void;
-}
-
-export default function Footer({ setActivePage }: FooterProps) {
+export default function Footer() {
+  const navigate = useNavigate();
+  
   return (
-    <footer className="bg-slate-900 text-white py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-white overflow-hidden p-0.5 shadow-lg">
-                <img src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg" alt="Logo Gumelar" className="w-full h-full object-contain" />
+    <footer className="bg-slate-950 text-white py-16 px-6 relative overflow-hidden">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 blur-[100px] rounded-full pointer-events-none" />
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          {/* Brand & About */}
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-white overflow-hidden p-1 shadow-2xl transform -rotate-3">
+                <img 
+                  src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg" 
+                  alt="Logo Gumelar" 
+                  className="w-full h-full object-contain" 
+                />
               </div>
-              <div className="text-3xl font-black">
-                GUMELAR<span className="text-amber-400">.ID</span>
+              <div>
+                <div className="text-3xl font-black tracking-tighter">
+                  GUMELAR<span className="text-amber-500">.ID</span>
+                </div>
+                <p className="text-[10px] font-black text-amber-500 uppercase tracking-[0.3em]">Masyarakat Kreatif</p>
               </div>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Ruang Kreatif Masyarakat Gumelar dan Sekitarnya — portal digital komunitas yang lahir dari semangat gotong royong.
+            <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
+              Platform pemberdayaan digital masyarakat Gumelar. Wadah kolaborasi UMKM, jasa, dan kreativitas lokal untuk tumbuh bersama di era digital.
             </p>
-            <button
-              onClick={() => setActivePage('donasi')}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 text-sm font-bold rounded-xl transition-all"
-            >
-              <Coffee size={14} />
-              Donasi Sruput Kopi
-            </button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => navigate('/donasi')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black rounded-xl transition-all shadow-lg shadow-amber-500/10"
+              >
+                <Coffee size={14} />
+                DONASI SRUPUT KOPI
+              </button>
+            </div>
           </div>
 
-          {/* Menu */}
+          {/* Quick Menu */}
           <div>
-            <h4 className="font-bold text-white mb-3">Menu Utama</h4>
-            <ul className="space-y-2">
+            <h4 className="font-black text-white text-sm uppercase tracking-widest mb-6">Navigasi</h4>
+            <ul className="space-y-3">
               {[
-                { id: 'tentang' as ActivePage, label: 'Tentang Kami' },
-                { id: 'informasi' as ActivePage, label: 'Informasi Gumelar' },
-                { id: 'kreatif' as ActivePage, label: 'Ruang Kreatif' },
-                { id: 'jasa' as ActivePage, label: 'Info Jasa & Usaha' },
-                { id: 'layanan' as ActivePage, label: 'Layanan Member' },
+                { path: '/', label: 'Beranda' },
+                { path: '/informasi', label: 'Informasi Gumelar' },
+                { path: '/kreatif', label: 'Ruang Kreatif' },
+                { path: '/jasa', label: 'Info Jasa & Usaha' },
+                { path: '/layanan', label: 'Layanan Member' },
               ].map(m => (
-                <li key={m.id}>
+                <li key={m.path}>
                   <button
-                    onClick={() => setActivePage(m.id)}
-                    className="text-slate-400 hover:text-amber-400 text-sm transition-colors"
+                    onClick={() => navigate(m.path)}
+                    className="text-slate-500 hover:text-white text-sm transition-colors flex items-center gap-2 group"
                   >
-                    → {m.label}
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-800 group-hover:bg-amber-500 transition-all" />
+                    {m.label}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Layanan */}
+          {/* Member Services */}
           <div>
-            <h4 className="font-bold text-white mb-3">Layanan Gratis Member</h4>
-            <ul className="space-y-2">
-              <li>
-                <button onClick={() => setActivePage('compress-pdf')} className="text-slate-400 hover:text-amber-400 text-sm transition-colors">
-                  → 📄 Compress PDF
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActivePage('buat-cv')} className="text-slate-400 hover:text-amber-400 text-sm transition-colors">
-                  → 📝 Buat CV Lamaran Kerja
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActivePage('daftar-member')} className="text-slate-400 hover:text-amber-400 text-sm transition-colors">
-                  → 🎉 Daftar Jadi Member
-                </button>
-              </li>
+            <h4 className="font-black text-white text-sm uppercase tracking-widest mb-6">Layanan Member</h4>
+            <ul className="space-y-3">
+              {[
+                { path: '/kasir', label: 'Kasir Sederhana UMKM' },
+                { path: '/portfolio', label: 'Galeri Portofolio Web' },
+                { path: '/qr-code', label: 'Generator QR Code' },
+                { path: '/image-optimizer', label: 'Image Optimizer' },
+                { path: '/daftar-member', label: 'Daftar Member Baru' },
+              ].map(m => (
+                <li key={m.path}>
+                  <button
+                    onClick={() => navigate(m.path)}
+                    className="text-slate-500 hover:text-amber-500 text-sm transition-colors flex items-center gap-2 group"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-800 group-hover:bg-amber-500 transition-all" />
+                    {m.label}
+                  </button>
+                </li>
+              ))}
             </ul>
-
-            <div className="mt-6 p-4 bg-slate-800 rounded-xl border border-slate-700">
-              <p className="text-xs text-slate-400 italic">
-                ☕ <strong className="text-white">"Sruput kopi siji,</strong><br />
-                <strong className="text-white">website terus mlaku!"</strong><br />
-                <span className="text-amber-400">— Tim Gumelar.ID · Sarilane</span>
-              </p>
-            </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-700 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-xs">
-            ⚠️ <strong>Disclaimer:</strong> No Politik · No SARA · Semua informasi menjadi tanggung jawab penulis
-          </p>
-          <p className="text-slate-600 text-xs">© 2025 Gumelar.ID · Sarilane · All Rights Reserved</p>
+        {/* Quotes Section */}
+        <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-[2rem] mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-2xl">☕</div>
+            <p className="text-slate-400 italic text-sm">
+              <span className="text-white font-bold">"Sruput kopi siji, website terus mlaku!"</span><br />
+              Visi GUMELAR.ID mendukung digitalisasi UMKM Desa.
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Developer Team</p>
+            <p className="text-amber-500 font-bold text-sm">LacosDev.com</p>
+          </div>
+        </div>
+
+        {/* Bottom Copyright & Secret Admin Access */}
+        <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">
+              © 2025 GUMELAR.ID · ALL RIGHTS RESERVED
+            </p>
+            <div className="w-1 h-1 bg-slate-800 rounded-full hidden md:block" />
+            <p className="text-slate-700 text-[10px] font-medium hidden md:block italic">
+              No Politik · No SARA
+            </p>
+          </div>
+          
+          {/* THE SECRET ADMIN ACCESS */}
+          <button 
+            onClick={() => navigate('/portal-admin')}
+            className="group flex items-center gap-2 text-slate-800 hover:text-slate-600 transition-all"
+            title="Administrator Access"
+          >
+            <Shield size={10} className="opacity-20 group-hover:opacity-100" />
+            <span className="text-[10px] font-black tracking-[0.2em] opacity-20 group-hover:opacity-100">SYSTEM ACCESS</span>
+          </button>
         </div>
       </div>
     </footer>

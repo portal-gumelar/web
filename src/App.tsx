@@ -20,6 +20,8 @@ import Footer from './components/layout/Footer';
 import FomoNotification from './components/ui/FomoNotification';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import PortfolioWebPage from './pages/PortfolioWebPage';
+import KasirPage from './pages/KasirPage';
+import AdminLoginPage from './pages/AdminLoginPage';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -80,7 +82,9 @@ function AppContent() {
           <Route path="/daftar-member" element={<DaftarMemberPage />} />
           <Route path="/surat-online" element={<SuratOnlinePage setActivePage={(page) => navigate(`/${page}`)} />} />
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/portal-admin" element={<AdminLoginPage onLogin={handleLogin} />} />
           <Route path="/portfolio" element={<PortfolioWebPage />} />
+          <Route path="/kasir" element={<KasirPage />} />
           <Route path="*" element={<HomePage setActivePage={(page) => navigate(`/${page}`)} />} />
         </Routes>
       </main>

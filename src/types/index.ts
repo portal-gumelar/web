@@ -77,4 +77,5 @@ export type ActivePage =
   | 'qr-code'
   | 'image-optimizer'
   | 'portfolio'
+  | 'kasir'
   | 'login';

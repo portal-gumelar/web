@@ -19,9 +19,9 @@ export default function DonasiPage() {
   const rekening = [
     { bank: 'BRI', no: '1234-5678-9012-345', nama: 'Gumelar Community', logo: '🏦' },
     { bank: 'BCA', no: '0987-6543-2100', nama: 'Gumelar Community', logo: '🏦' },
-    { bank: 'DANA', no: '0812-3456-7890', nama: 'Sarilane - Gumelar.ID', logo: '💳' },
-    { bank: 'GoPay', no: '0812-3456-7890', nama: 'Sarilane - Gumelar.ID', logo: '💚' },
-    { bank: 'OVO', no: '0812-3456-7890', nama: 'Sarilane - Gumelar.ID', logo: '💜' },
+    { bank: 'DANA', no: '0812-3456-7890', nama: 'LacosDev - Gumelar.ID', logo: '💳' },
+    { bank: 'GoPay', no: '0812-3456-7890', nama: 'LacosDev - Gumelar.ID', logo: '💚' },
+    { bank: 'OVO', no: '0812-3456-7890', nama: 'LacosDev - Gumelar.ID', logo: '💜' },
   ];
 
   return (
@@ -104,7 +104,7 @@ export default function DonasiPage() {
             <CreditCard size={18} className="text-blue-500" />
             Transfer ke Rekening Berikut:
           </h3>
-          <p className="text-xs text-gray-500 mb-4">a/n <strong>Sarilane</strong> · Pengelola Gumelar.ID</p>
+          <p className="text-xs text-gray-500 mb-4">a/n <strong>LacosDev</strong> · Pengelola Gumelar.ID</p>
           <div className="space-y-3">
             {rekening.map(rek => (
               <div key={rek.bank} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-amber-200 transition-all">
@@ -177,7 +177,7 @@ export default function DonasiPage() {
             ☕ "<em>Sruput kopi siji, website terus mlaku!</em>"<br />
             <span className="text-xs text-amber-700 mt-1 block">Tidak ada nominal minimum. Berapapun kontribusi Anda sangat kami hargai.</span>
           </p>
-          <p className="text-amber-600 text-xs mt-2 font-bold">— Tim Gumelar.ID · Sarilane</p>
+          <p className="text-amber-600 text-xs mt-2 font-bold">— Tim Gumelar.ID · LacosDev.com</p>
         </div>
 
       </div>

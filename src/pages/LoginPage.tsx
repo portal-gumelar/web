@@ -1,145 +1,131 @@
 import { useState } from 'react';
-import { User, ShieldCheck, Lock, Phone, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { LogIn, User, Lock, ArrowRight, Eye, EyeOff, ShieldCheck, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface LoginPageProps {
-  onLogin: (role: 'admin' | 'member', name: string) => void;
-}
+export default function LoginPage({ onLogin }: { onLogin: (user: any) => void }) {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-export default function LoginPage({ onLogin }: LoginPageProps) {
-  const [activeTab, setActiveTab] = useState<'member' | 'admin'>('member');
-  const [formData, setFormData] = useState({ identifier: '', password: '' });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoggingIn(true);
     
-    // Simulate API call
+    // Simulate Member Login
     setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
-      
-      setTimeout(() => {
-        const name = activeTab === 'admin' ? 'Administrator' : (formData.identifier || 'Warga Gumelar');
-        onLogin(activeTab, name);
-      }, 1500);
-    }, 1200);
+      const userData = {
+        name: username || 'Member Gumelar',
+        role: 'member',
+        id: Date.now().toString()
+      };
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      onLogin(userData);
+      setIsSuccess(true);
+      setTimeout(() => navigate('/'), 1500);
+    }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-20 pb-12 px-4">
-      <div className="max-w-md w-full">
-        
-        {/* Logo / Branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
-            Portal Komunitas Gumelar
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative Circles */}
+      <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50" />
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50" />
+
+      <div className="w-full max-w-md relative z-10">
+        <div className="text-center mb-10">
+          <div className="w-20 h-20 bg-blue-600 rounded-[2.5rem] shadow-xl shadow-blue-200 flex items-center justify-center mx-auto mb-6 transform -rotate-12">
+            <LogIn className="text-white" size={32} />
           </div>
-          <h1 className="text-3xl font-black text-gray-800">Selamat Datang</h1>
-          <p className="text-gray-500 mt-2 text-sm">Masuk untuk mengakses layanan eksklusif warga</p>
+          <h1 className="text-4xl font-black text-gray-900 mb-2">Selamat <span className="text-blue-600">Datang</span></h1>
+          <p className="text-gray-500">Masuk untuk mengakses layanan eksklusif warga</p>
         </div>
 
-        {/* Login Card */}
-        <div className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden">
-          
-          {/* Tabs */}
-          <div className="flex p-2 bg-gray-50 m-4 rounded-2xl">
-            <button
-              onClick={() => setActiveTab('member')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'member' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-            >
-              <User size={16} /> Warga / Member
-            </button>
-            <button
-              onClick={() => setActiveTab('admin')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'admin' ? 'bg-white text-amber-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-            >
-              <ShieldCheck size={16} /> Admin Desa
-            </button>
-          </div>
-
-          <div className="p-8 pt-4">
+        <div className="bg-white rounded-[3rem] shadow-2xl shadow-blue-100 border border-gray-100 overflow-hidden">
+          <div className="p-8 md:p-10">
             <AnimatePresence mode="wait">
-              {success ? (
-                <motion.div
+              {isSuccess ? (
+                <motion.div 
                   key="success"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-10"
                 >
-                  <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-                    <CheckCircle2 size={40} />
+                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <ShieldCheck size={40} className="text-green-500" />
                   </div>
                   <h2 className="text-2xl font-black text-gray-800">Berhasil Masuk!</h2>
                   <p className="text-gray-500 mt-2">Mengalihkan Anda ke dashboard...</p>
                 </motion.div>
               ) : (
-                <motion.form
-                  key={activeTab}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  onSubmit={handleSubmit}
-                  className="space-y-5"
+                <motion.form 
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  onSubmit={handleLogin} 
+                  className="space-y-6"
                 >
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest px-1">
-                      {activeTab === 'member' ? 'Nomor WhatsApp' : 'Username / Email'}
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nomor WhatsApp / ID</label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
+                        <input 
+                          type="text" 
+                          required
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          className="w-full bg-gray-50 border-2 border-gray-50 rounded-2xl px-12 py-4 text-gray-800 focus:border-blue-500 focus:bg-white outline-none transition-all"
+                          placeholder="08xxxxxxxxxx"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center px-1">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Kata Sandi</label>
+                        <button type="button" className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline">Lupa Password?</button>
+                      </div>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={20} />
+                        <input 
+                          type={showPassword ? "text" : "password"}
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full bg-gray-50 border-2 border-gray-50 rounded-2xl px-12 py-4 text-gray-800 focus:border-blue-500 focus:bg-white outline-none transition-all"
+                          placeholder="••••••••"
+                        />
+                        <button 
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-blue-500 transition-colors"
+                        >
+                          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <label className="flex items-center gap-3 cursor-pointer group px-1">
+                      <div className="relative flex items-center justify-center">
+                        <input type="checkbox" className="peer appearance-none w-5 h-5 border-2 border-gray-200 rounded-lg checked:bg-blue-600 checked:border-blue-600 transition-all" />
+                        <div className="absolute opacity-0 peer-checked:opacity-100 text-white pointer-events-none">
+                          <svg size={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-gray-500 group-hover:text-gray-700 transition-colors">Ingat saya di perangkat ini</span>
                     </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                        {activeTab === 'member' ? <Phone size={18} /> : <User size={18} />}
-                      </div>
-                      <input
-                        required
-                        type={activeTab === 'member' ? 'tel' : 'text'}
-                        value={formData.identifier}
-                        onChange={e => setFormData({ ...formData, identifier: e.target.value })}
-                        placeholder={activeTab === 'member' ? '08xx xxxx xxxx' : 'admin_gumelar'}
-                        className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all font-medium"
-                      />
-                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest px-1">Kata Sandi</label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                        <Lock size={18} />
-                      </div>
-                      <input
-                        required
-                        type="password"
-                        value={formData.password}
-                        onChange={e => setFormData({ ...formData, password: e.target.value })}
-                        placeholder="••••••••"
-                        className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  {activeTab === 'member' && (
-                    <div className="flex items-center justify-between px-1">
-                      <label className="flex items-center gap-2 cursor-pointer group">
-                        <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="text-xs text-gray-500 group-hover:text-gray-700">Ingat Saya</span>
-                      </label>
-                      <button type="button" className="text-xs font-bold text-blue-600 hover:underline">Lupa Password?</button>
-                    </div>
-                  )}
-
-                  <button
-                    disabled={loading}
+                  <button 
                     type="submit"
-                    className={`w-full py-4 rounded-2xl text-white font-black text-lg shadow-xl flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] ${
-                      activeTab === 'admin' 
-                        ? 'bg-amber-500 hover:bg-amber-400 shadow-amber-200' 
-                        : 'bg-blue-600 hover:bg-blue-500 shadow-blue-200'
-                    }`}
+                    disabled={isLoggingIn}
+                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-200 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    {loading ? (
+                    {isLoggingIn ? (
                       <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
                       <>Masuk Sekarang <ArrowRight size={20} /></>
@@ -150,19 +136,21 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             </AnimatePresence>
           </div>
           
-          <div className="p-6 bg-gray-50 text-center border-t border-gray-100">
-            <p className="text-sm text-gray-500">
-              {activeTab === 'member' ? 'Belum punya akun warga?' : 'Hanya untuk staf resmi desa'}
-            </p>
-            {activeTab === 'member' && (
-              <button className="text-sm font-black text-blue-600 mt-1 hover:underline">Daftar Member Gumelar.ID →</button>
-            )}
+          <div className="p-8 bg-slate-50 text-center border-t border-gray-100">
+            <p className="text-gray-500 text-xs mb-3">Belum menjadi member?</p>
+            <button 
+              onClick={() => navigate('/daftar-member')}
+              className="px-8 py-3 bg-white border border-gray-200 text-blue-600 font-black text-xs rounded-xl hover:bg-blue-50 hover:border-blue-100 transition-all shadow-sm"
+            >
+              DAFTAR MEMBER GUMELAR.ID →
+            </button>
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-8">
-          Sistem Autentikasi Terintegrasi · GUMELAR.ID v2.0
-        </p>
+        <div className="mt-10 flex items-center justify-center gap-2 text-gray-300">
+          <Heart size={14} className="fill-gray-300" />
+          <span className="text-[10px] font-black uppercase tracking-widest">Membangun Komunitas Digital</span>
+        </div>
       </div>
     </div>
   );

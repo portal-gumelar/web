@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Send, FileSignature, ArrowLeft, AlertCircle } from 'lucide-react';
+import { Send, FileSignature, ArrowLeft, AlertCircle, Lock } from 'lucide-react';
 import { ActivePage } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface SuratOnlinePageProps {
   setActivePage: (page: ActivePage) => void;
 }
 
-export default function SuratOnlinePage({ setActivePage }: SuratOnlinePageProps) {
+export default function SuratOnlinePage({  }: SuratOnlinePageProps) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     nama: '',
     nik: '',
@@ -19,7 +21,7 @@ export default function SuratOnlinePage({ setActivePage }: SuratOnlinePageProps)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Halo Admin Desa Gumelar,
+    const message = `Halo Admin GUMELAR.ID,
 Saya ingin mengajukan permohonan surat:
 
 *Jenis Surat:* ${form.jenisSurat}
@@ -34,11 +36,32 @@ Mohon arahannya untuk proses selanjutnya. Terima kasih.`;
     window.open(`https://wa.me/${adminWhatsApp}?text=${encodedMessage}`, '_blank');
   };
 
+  const isMember = !!localStorage.getItem('currentUser');
+
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16 px-4">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto relative">
+
+        {/* MEMBER PROTECTION OVERLAY */}
+        {!isMember && (
+          <div className="absolute inset-0 z-[50] backdrop-blur-md bg-white/60 rounded-[3rem] flex flex-col items-center justify-center p-8 text-center border border-white">
+            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl animate-bounce">
+              <Lock size={32} />
+            </div>
+            <h4 className="text-slate-900 text-2xl font-black mb-4">Akses Khusus Member</h4>
+            <p className="text-slate-500 mb-8 max-w-xs">
+              Silakan masuk ke akun Member Anda untuk menggunakan fitur E-Surat Online.
+            </p>
+            <button 
+              onClick={() => navigate('/login')}
+              className="px-8 py-4 bg-slate-900 text-white font-black rounded-2xl hover:scale-105 transition-all shadow-xl"
+            >
+              Masuk Sekarang
+            </button>
+          </div>
+        )}
         <button
-          onClick={() => setActivePage('layanan')}
+          onClick={() => navigate('/layanan')}
           className="flex items-center gap-2 text-blue-600 font-semibold mb-6 hover:underline"
         >
           <ArrowLeft size={16} /> Kembali ke Layanan
@@ -51,7 +74,7 @@ Mohon arahannya untuk proses selanjutnya. Terima kasih.`;
             </div>
             <h1 className="text-3xl font-black mb-2">E-Surat Online</h1>
             <p className="text-blue-100 text-sm max-w-md mx-auto">
-              Layanan mandiri pengajuan surat keterangan desa. Cepat, mudah, dan langsung terhubung dengan Admin Desa via WhatsApp.
+              Layanan mandiri pengajuan surat keterangan. Cepat, mudah, dan langsung terhubung dengan Admin via WhatsApp.
             </p>
           </div>
 
@@ -59,7 +82,7 @@ Mohon arahannya untuk proses selanjutnya. Terima kasih.`;
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-start gap-3">
               <AlertCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
               <p className="text-sm text-blue-800">
-                Data yang Anda kirimkan akan diteruskan ke WhatsApp Admin Desa. Pastikan Anda menggunakan nomor yang aktif agar mudah dihubungi kembali.
+                Data yang Anda kirimkan akan diteruskan ke WhatsApp Admin GUMELAR.ID. Pastikan Anda menggunakan nomor yang aktif agar mudah dihubungi kembali.
               </p>
             </div>
 

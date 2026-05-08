@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Users, CheckCircle, ChevronDown } from 'lucide-react';
+import { Users, CheckCircle, ChevronDown, ArrowLeft } from 'lucide-react';
 import { subKategoriProduksi, subKategoriJasa, destinasiPJTKI } from '../data/mockData';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   nama: string;
@@ -31,6 +32,7 @@ const defaultForm: FormData = {
 };
 
 export default function DaftarMemberPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState<FormData>(defaultForm);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -114,6 +116,12 @@ export default function DaftarMemberPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16 px-4">
       <div className="max-w-2xl mx-auto">
+        <button
+          onClick={() => navigate('/layanan')}
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold mb-8 group transition-all"
+        >
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> Kembali
+        </button>
 
         {/* Header */}
         <div className="text-center mb-10">

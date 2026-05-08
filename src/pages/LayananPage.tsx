@@ -1,4 +1,4 @@
-import { Star, FileText, FileCheck, FileSignature, QrCode, Image, LayoutGrid, Coffee, Heart, Globe, ArrowRight } from 'lucide-react';
+import { Star, FileText, FileCheck, FileSignature, QrCode, Image, LayoutGrid, Coffee, Heart, Globe, ArrowRight, Calculator } from 'lucide-react';
 import { ActivePage } from '../types';
 
 interface LayananPageProps {
@@ -52,7 +52,7 @@ export default function LayananPage({ setActivePage }: LayananPageProps) {
             </div>
             <h3 className="text-xl font-black text-gray-800 mb-2 group-hover:text-green-600 transition-colors">E-Surat Online</h3>
             <p className="text-gray-500 text-xs leading-relaxed mb-6">
-              Ajukan surat Pengantar, Domisili, SKU, SKTM dengan mudah dan langsung terhubung ke WhatsApp Admin Desa.
+              Ajukan surat Pengantar, Domisili, SKU, SKTM dengan mudah dan langsung terhubung ke WhatsApp Admin GUMELAR.ID.
             </p>
             <div className="mt-auto flex items-center gap-2 text-green-600 font-bold text-xs uppercase tracking-widest">
               Gunakan Sekarang → 
@@ -164,6 +164,23 @@ export default function LayananPage({ setActivePage }: LayananPageProps) {
             </p>
             <div className="mt-auto flex items-center gap-2 text-amber-600 font-bold text-xs uppercase tracking-widest">
               Lihat Galeri <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </button>
+
+          {/* Kasir Sederhana */}
+          <button
+            onClick={() => setActivePage('kasir')}
+            className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
+          >
+            <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Calculator className="text-blue-600" size={24} />
+            </div>
+            <h3 className="text-xl font-black text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">Kasir Gumelar</h3>
+            <p className="text-gray-500 text-xs leading-relaxed mb-6">
+              Aplikasi kasir (POS) sederhana untuk mencatat penjualan, hitung kembalian, dan cetak struk untuk UMKM.
+            </p>
+            <div className="mt-auto flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-widest">
+              Gunakan Kasir <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </div>
           </button>
 

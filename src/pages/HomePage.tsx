@@ -434,7 +434,7 @@ export default function HomePage({ setActivePage }: HomePageProps) {
               ⚠️ No Politik · No SARA · No Hoax
             </p>
             <p className="text-slate-600 text-[10px] font-medium">
-              © 2025 GUMELAR.ID · Dikelola oleh Sarilane Community
+              © 2025 GUMELAR.ID · Dikelola oleh LacosDev.com
             </p>
           </div>
         </div>

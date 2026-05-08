@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import { Upload, Image as ImageIcon, Download, CheckCircle, RefreshCw, AlertCircle, Zap, Trash2 } from 'lucide-react';
+import { Upload, Image as ImageIcon, Download, CheckCircle, RefreshCw, AlertCircle, Zap, Trash2, ArrowLeft, Lock } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function ImageOptimizerPage() {
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'done'>('idle');
@@ -69,9 +71,36 @@ export default function ImageOptimizerPage() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  const isMember = !!localStorage.getItem('currentUser');
+
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16 px-4">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto relative">
+
+        {/* MEMBER PROTECTION OVERLAY */}
+        {!isMember && (
+          <div className="absolute inset-0 z-[50] backdrop-blur-md bg-white/60 rounded-[3rem] flex flex-col items-center justify-center p-8 text-center border border-white">
+            <div className="w-16 h-16 bg-green-500 text-white rounded-2xl flex items-center justify-center mb-6 shadow-xl animate-bounce">
+              <Lock size={32} />
+            </div>
+            <h4 className="text-slate-900 text-2xl font-black mb-4">Akses Khusus Member</h4>
+            <p className="text-slate-500 mb-8 max-w-xs">
+              Silakan masuk ke akun Member Anda untuk menggunakan fitur Image Optimizer.
+            </p>
+            <button 
+              onClick={() => navigate('/login')}
+              className="px-8 py-4 bg-slate-900 text-white font-black rounded-2xl hover:scale-105 transition-all shadow-xl"
+            >
+              Masuk Sekarang
+            </button>
+          </div>
+        )}
+        <button
+          onClick={() => navigate('/layanan')}
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold mb-8 group transition-all"
+        >
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> Kembali ke Layanan
+        </button>
         <div className="text-center mb-10">
           <div className="w-20 h-20 bg-green-100 rounded-3xl flex items-center justify-center mx-auto mb-4">
             <ImageIcon className="text-green-600" size={36} />
