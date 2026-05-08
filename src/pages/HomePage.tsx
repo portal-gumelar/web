@@ -1,11 +1,23 @@
-import { Coffee, Users, Newspaper, Palette, Briefcase, Star, ChevronRight, Shield, Zap } from 'lucide-react';
+import { Coffee, Users, Newspaper, Palette, Briefcase, Star, ChevronRight, Shield, Zap, X, Heart, Gift, Share2, Link as LinkIcon } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ActivePage } from '../types';
 
 interface HomePageProps {
   setActivePage: (page: ActivePage) => void;
 }
+
+const galleryImages = [
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.59.jpeg?updatedAt=1778146904593", caption: "Maju Bersama UMKM Gumelar" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.58%20(1).jpeg?updatedAt=1778146903929", caption: "Ruang Kreatif Karya Lokal" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.56.jpeg?updatedAt=1778146898519", caption: "Portal Gumelar: Dari Kita Untuk Semua" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.03.00.jpeg?updatedAt=1778146902020", caption: "Kembangkan Potensi Usaha Desa" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.58.jpeg?updatedAt=1778146897922", caption: "Bersinergi Membangun Ekonomi Lokal" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.56%20(1).jpeg?updatedAt=1778146897332", caption: "Produk Lokal Berkualitas Unggul" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.55%20(1).jpeg?updatedAt=1778146889744", caption: "Gumelar.ID Wadah Inspirasi Warga" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.02.55.jpeg?updatedAt=1778146867547", caption: "Dukung Karya & Usaha Tetangga" },
+  { src: "https://ik.imagekit.io/Gumelar/WhatsApp%20Image%202026-05-07%20at%2016.03.00%20(1).jpeg?updatedAt=1778146840004", caption: "Langkah Kecil, Dampak Besar" },
+];
 
 const menuCards = [
   {
@@ -72,7 +84,7 @@ const containerVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 // Animated counter hook
@@ -99,6 +111,8 @@ function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string
 
 
 export default function HomePage({ setActivePage }: HomePageProps) {
+  const [selectedImage, setSelectedImage] = useState<{src: string, caption: string} | null>(null);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -211,6 +225,67 @@ export default function HomePage({ setActivePage }: HomePageProps) {
         </div>
       </section>
 
+      {/* Photo Gallery Section */}
+      <section className="bg-slate-950 py-16 border-t border-slate-900 overflow-hidden relative">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none"></div>
+        <div className="relative z-10 max-w-6xl mx-auto px-6 mb-10 flex items-end justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/30 text-amber-400 px-3 py-1 rounded-full text-xs font-bold mb-3">
+              📸 GALERI TERBARU
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-white">
+              Potret <span className="text-amber-400">Komunitas</span>
+            </h2>
+            <p className="text-slate-400 text-base mt-2 max-w-xl">Momen kebersamaan, kreativitas, dan kegiatan dari masyarakat Gumelar.</p>
+          </div>
+          <button 
+            onClick={() => setActivePage('kreatif')}
+            className="hidden sm:flex items-center gap-1 text-amber-400 hover:text-amber-300 text-sm font-bold transition-all hover:gap-2"
+          >
+            Lihat Galeri <ChevronRight size={16} />
+          </button>
+        </div>
+
+        {/* Marquee Gallery Container */}
+        <div className="relative flex overflow-hidden group pb-8">
+          {/* Gradient Masks for fading effect at edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-slate-950 to-transparent z-20 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-slate-950 to-transparent z-20 pointer-events-none"></div>
+
+          {/* Marquee Scroll */}
+          <div className="flex gap-4 px-4 w-max animate-marquee">
+            {[...galleryImages, ...galleryImages].map((item, idx) => (
+              <div 
+                key={idx} 
+                onClick={() => setSelectedImage(item)}
+                className="w-48 sm:w-64 md:w-80 h-48 sm:h-64 md:h-80 flex-shrink-0 rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 hover:border-amber-400/50 transition-all duration-500 cursor-pointer relative group"
+              >
+                <img 
+                  src={item.src} 
+                  alt={item.caption} 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                  <span className="text-white font-bold text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {item.caption}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="text-center sm:hidden mt-4">
+           <button 
+            onClick={() => setActivePage('kreatif')}
+            className="inline-flex items-center gap-1 text-amber-400 text-sm font-bold"
+          >
+            Lihat Semua Foto <ChevronRight size={16} />
+          </button>
+        </div>
+      </section>
+
       {/* Main Menu Section */}
       <section className="bg-gray-50 py-20 px-6">
         <div className="max-w-6xl mx-auto">
@@ -295,20 +370,104 @@ export default function HomePage({ setActivePage }: HomePageProps) {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-white py-10 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="text-3xl font-black mb-2">
-            GUMELAR<span className="text-amber-400">.ID</span>
+      {/* Sruput Kopi / Donation Section */}
+      <section className="bg-amber-400 py-20 px-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-10 opacity-10 rotate-12">
+          <Coffee size={200} />
+        </div>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-full text-sm font-black mb-6 animate-bounce">
+            <Gift size={16} className="text-amber-400" /> DUKUNGAN EKONOMI DIGITAL
           </div>
-          <p className="text-slate-400 text-sm mb-4">Ruang Kreatif Masyarakat Gumelar dan Sekitarnya</p>
-          <div className="w-16 h-0.5 bg-slate-600 mx-auto mb-4" />
-          <p className="text-slate-500 text-xs">
-            ⚠️ Disclaimer: No Politik · No SARA · Semua informasi yang disampaikan menjadi tanggung jawab penulis
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+            Gratis <span className="bg-white px-3">Landing Page</span> & Web Untuk UMKM
+          </h2>
+          <p className="text-xl text-slate-800 mb-10 font-medium max-w-2xl mx-auto">
+            GUMELAR.ID bantu buatkan profil digital usaha Anda tanpa biaya. Mari maju bersama sambil <span className="font-black italic">"Sruput Kopi"</span> bareng tim pengembang kami.
           </p>
-          <p className="text-slate-600 text-xs mt-2">© 2025 Gumelar.ID · Sarilane</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button 
+              onClick={() => window.open('https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20ingin%20dibuatkan%20Landing%20Page%20Gratis%20untuk%20usaha%20saya.', '_blank')}
+              className="px-10 py-5 bg-slate-900 text-white font-black rounded-3xl text-xl shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center gap-3"
+            >
+              🚀 Buatkan Web Saya
+            </button>
+            <button 
+              onClick={() => setActivePage('donasi')}
+              className="px-10 py-5 bg-white text-slate-900 font-black rounded-3xl text-xl shadow-xl hover:bg-gray-50 transition-all active:scale-95 flex items-center gap-3"
+            >
+              ☕ Sruput Kopi (Donasi)
+            </button>
+          </div>
+          <p className="mt-8 text-sm text-slate-700 font-bold opacity-60 italic">
+            * Layanan ini diberikan gratis sebagai bentuk dukungan untuk kemajuan ekonomi kreatif desa.
+          </p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-center">
+            <div className="text-center md:text-left">
+              <div className="text-3xl font-black mb-2 tracking-tighter">
+                GUMELAR<span className="text-amber-400">.ID</span>
+              </div>
+              <p className="text-slate-400 text-sm">Digitalisasi Desa, Sejahterakan Warga.</p>
+            </div>
+            <div className="flex justify-center gap-6">
+              <a href="#" className="p-3 bg-white/5 rounded-full hover:bg-amber-400 hover:text-slate-900 transition-all"><Share2 size={20} /></a>
+              <a href="#" className="p-3 bg-white/5 rounded-full hover:bg-amber-400 hover:text-slate-900 transition-all"><LinkIcon size={20} /></a>
+            </div>
+            <div className="text-center md:text-right">
+              <button 
+                onClick={() => setActivePage('tentang')}
+                className="text-amber-400 font-bold hover:underline"
+              >
+                Tentang Kami
+              </button>
+            </div>
+          </div>
+          <div className="w-full h-px bg-white/10 mb-8" />
+          <div className="text-center">
+            <p className="text-slate-500 text-[10px] mb-2 uppercase tracking-widest font-bold">
+              ⚠️ No Politik · No SARA · No Hoax
+            </p>
+            <p className="text-slate-600 text-[10px] font-medium">
+              © 2025 GUMELAR.ID · Dikelola oleh Sarilane Community
+            </p>
+          </div>
         </div>
       </footer>
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-slate-950/90 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button 
+            className="absolute top-4 right-4 sm:top-8 sm:right-8 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-colors"
+            onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
+          >
+            <X size={24} />
+          </button>
+          <div 
+            className="relative max-w-5xl w-full max-h-[85vh] rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={selectedImage.src} 
+              alt={selectedImage.caption} 
+              className="w-full h-full object-contain max-h-[85vh]"
+            />
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-6 sm:p-8">
+              <h3 className="text-white text-xl sm:text-2xl font-black drop-shadow-md">
+                {selectedImage.caption}
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

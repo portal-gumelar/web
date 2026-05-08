@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Image as ImageIcon, Upload, Download, CheckCircle, AlertCircle, Trash2, Zap } from 'lucide-react';
+import { Upload, Image as ImageIcon, Download, CheckCircle, RefreshCw, AlertCircle, Zap, Trash2 } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import { motion, AnimatePresence } from 'framer-motion';
 

@@ -1,4 +1,4 @@
-import { Star, FileText, FileCheck, FileSignature, QrCode, Image as ImageIcon } from 'lucide-react';
+import { Star, FileText, FileCheck, FileSignature, QrCode, Image, LayoutGrid, Coffee, Heart, Globe, ArrowRight } from 'lucide-react';
 import { ActivePage } from '../types';
 
 interface LayananPageProps {
@@ -82,7 +82,7 @@ export default function LayananPage({ setActivePage }: LayananPageProps) {
             className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
           >
             <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <ImageIcon className="text-indigo-600" size={24} />
+              <Image className="text-indigo-600" size={24} />
             </div>
             <h3 className="text-xl font-black text-gray-800 mb-2 group-hover:text-indigo-600 transition-colors">Image Optimizer</h3>
             <p className="text-gray-500 text-xs leading-relaxed mb-6">
@@ -127,6 +127,65 @@ export default function LayananPage({ setActivePage }: LayananPageProps) {
             </div>
           </button>
 
+          {/* GRATIS Landing Page */}
+          <div
+            className="bg-gradient-to-br from-amber-400 to-amber-500 rounded-[2rem] shadow-xl p-8 text-left hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group relative overflow-hidden flex flex-col"
+          >
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-2xl" />
+            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:rotate-12 transition-transform">
+              <LayoutGrid className="text-amber-600" size={24} />
+            </div>
+            <div className="bg-slate-900 text-amber-400 px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-tighter w-fit mb-3">
+              GRATIS / FREE
+            </div>
+            <h3 className="text-xl font-black text-slate-900 mb-2">Web & Landing Page</h3>
+            <p className="text-slate-800 text-xs leading-relaxed mb-6 font-medium">
+              Khusus UMKM Gumelar! Kami bantu buatkan Landing Page / Web sederhana untuk jualan Anda secara Gratis.
+            </p>
+            <button 
+              onClick={() => window.open('https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20ingin%20dibuatkan%20Landing%20Page%20Gratis%20untuk%20usaha%20saya.', '_blank')}
+              className="mt-auto flex items-center justify-center gap-2 bg-slate-900 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-all"
+            >
+              Ajukan Sekarang → 
+            </button>
+          </div>
+
+          {/* Portfolio Gallery */}
+          <button
+            onClick={() => setActivePage('portfolio')}
+            className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 text-left hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
+          >
+            <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Globe className="text-amber-600" size={24} />
+            </div>
+            <h3 className="text-xl font-black text-gray-800 mb-2 group-hover:text-amber-600 transition-colors">Galeri Web UMKM</h3>
+            <p className="text-gray-500 text-xs leading-relaxed mb-6">
+              Lihat contoh website dan landing page profesional yang bisa didapatkan secara gratis khusus member.
+            </p>
+            <div className="mt-auto flex items-center gap-2 text-amber-600 font-bold text-xs uppercase tracking-widest">
+              Lihat Galeri <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </button>
+
+        </div>
+
+        {/* Donation/Sruput Kopi Banner in Layanan */}
+        <div className="mt-12 bg-amber-50 border-2 border-amber-200 rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+          <div className="w-20 h-20 bg-amber-400 rounded-3xl flex items-center justify-center shadow-lg rotate-3">
+            <Coffee size={40} className="text-slate-900" />
+          </div>
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="text-xl font-black text-slate-900 mb-1 flex items-center justify-center md:justify-start gap-2">
+              Sruput Kopi Bareng Dev <Heart size={20} className="text-red-500 fill-red-500" />
+            </h3>
+            <p className="text-slate-600 text-sm font-medium">Layanan ini gratis, namun dukungan Anda lewat "Sruput Kopi" sangat membantu kami terus berinovasi.</p>
+          </div>
+          <button 
+            onClick={() => setActivePage('donasi')}
+            className="px-8 py-4 bg-slate-900 text-white font-black rounded-2xl text-xs hover:bg-slate-800 transition-all shadow-xl whitespace-nowrap"
+          >
+            ☕ Sruput Kopi (Donasi)
+          </button>
         </div>
 
         {/* Coming Soon */}

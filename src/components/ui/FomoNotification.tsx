@@ -11,7 +11,7 @@ const FOMO_MESSAGES = [
   { text: "Andi dari Jakarta membuka halaman UMKM Gumelar", icon: Eye, color: "text-indigo-500", bg: "bg-indigo-100" },
   { text: "Nurul baru saja memberikan donasi Sruput Kopi ☕", icon: Bell, color: "text-orange-500", bg: "bg-orange-100" },
   { text: "Fajar dari Ajibarang sedang melihat Ruang Kreatif", icon: Eye, color: "text-pink-500", bg: "bg-pink-100" },
-  { text: "Hasan baru saja melihat Transparansi Dana Desa", icon: Bell, color: "text-yellow-600", bg: "bg-yellow-100" },
+  { text: "Hasan baru saja melihat Galeri Ruang Kreatif", icon: Eye, color: "text-amber-600", bg: "bg-amber-100" },
   { text: "Rina dari Banyumas tertarik dengan produk UMKM lokal", icon: Eye, color: "text-blue-600", bg: "bg-blue-100" },
   { text: "Doni baru saja menghubungi penjual via WhatsApp", icon: CheckCircle2, color: "text-teal-500", bg: "bg-teal-100" },
 ];
@@ -48,7 +48,8 @@ export default function FomoNotification() {
     }, 4000);
   };
 
-  const Icon = currentMessage.icon;
+  if (!currentMessage) return null;
+  const Icon = currentMessage.icon || Bell;
 
   return (
     <AnimatePresence>

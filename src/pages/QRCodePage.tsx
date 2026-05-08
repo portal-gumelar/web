@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { QrCode, Download, Copy, Check, RefreshCw } from 'lucide-react';
+import { QrCode, Download, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion } from 'framer-motion';
 
 export default function QRCodePage() {
   const [text, setText] = useState('');
-  const [copied, setCopied] = useState(false);
 
   const downloadQR = () => {
     const svg = document.getElementById('qr-svg');
@@ -81,7 +80,7 @@ export default function QRCodePage() {
                     level="H"
                     includeMargin={true}
                     imageSettings={{
-                      src: "/logo.png",
+                      src: "https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg",
                       x: undefined,
                       y: undefined,
                       height: 40,

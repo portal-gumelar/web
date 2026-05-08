@@ -69,3 +69,17 @@ body {
 .border-3 {
   border-width: 3px;
 }
+
+/* Marquee Animation for Gallery */
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: scrollMarquee 40s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, Coffee, Home, Info, Newspaper, Palette, Briefcase, Star, PieChart, LogIn, User, LogOut } from 'lucide-react';
+import { Menu, X, Coffee, Home, Info, Newspaper, Palette, Briefcase, Star, LogIn, User, LogOut } from 'lucide-react';
 import { ActivePage, User as UserType } from '../../types';
 
 interface NavbarProps {
@@ -13,7 +13,6 @@ const navItems = [
   { id: 'home' as ActivePage, label: 'Beranda', icon: Home },
   { id: 'tentang' as ActivePage, label: 'Tentang Kami', icon: Info },
   { id: 'informasi' as ActivePage, label: 'Informasi', icon: Newspaper },
-  { id: 'transparansi' as ActivePage, label: 'Transparansi', icon: PieChart },
   { id: 'kreatif' as ActivePage, label: 'Ruang Kreatif', icon: Palette },
   { id: 'jasa' as ActivePage, label: 'Info Jasa', icon: Briefcase },
   { id: 'layanan' as ActivePage, label: 'Layanan Member', icon: Star },
@@ -43,7 +42,7 @@ export default function Navbar({ activePage, setActivePage, user, onLogout }: Na
             className="flex items-center gap-3 group"
           >
             <div className="w-10 h-10 rounded-full bg-white overflow-hidden shadow-md group-hover:scale-110 transition-transform flex items-center justify-center p-0.5">
-              <img src="/logo.png" alt="Logo Gumelar" className="w-full h-full object-contain" />
+              <img src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg" alt="Logo Gumelar" className="w-full h-full object-contain" />
             </div>
             <div className="text-left hidden sm:block">
               <div className="text-white font-black text-lg leading-none tracking-wide">GUMELAR.ID</div>

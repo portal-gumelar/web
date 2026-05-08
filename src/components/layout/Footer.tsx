@@ -14,7 +14,7 @@ export default function Footer({ setActivePage }: FooterProps) {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-white overflow-hidden p-0.5 shadow-lg">
-                <img src="/logo.png" alt="Logo Gumelar" className="w-full h-full object-contain" />
+                <img src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg" alt="Logo Gumelar" className="w-full h-full object-contain" />
               </div>
               <div className="text-3xl font-black">
                 GUMELAR<span className="text-amber-400">.ID</span>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image as ImageIcon, Play, X, MessageSquare, Reply, ShieldCheck, Send, MapPin, User, Info, Camera, Share2, Link as LinkIcon } from 'lucide-react';
+import { Newspaper, Eye, Clock, Plus, AlertTriangle, ChevronRight, Calendar, Image as ImageIcon, Play, X, MessageSquare, ShieldCheck, Send, MapPin, User, Info, Camera, Share2, Link as LinkIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockBerita } from '../data/mockData';
 import { BeritaItem, Comment, AgendaItem } from '../types';
@@ -52,18 +52,16 @@ export default function InformasiPage() {
   });
 
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
-  const [fotoFile, setFotoFile] = useState<File | null>(null);
 
   // Comment state
   const [commentForm, setCommentForm] = useState({ penulis: '', konten: '' });
   const [replyTarget, setReplyTarget] = useState<{ id: string; penulis: string } | null>(null);
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [isAdminMode] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFotoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => setFotoPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -104,7 +102,6 @@ export default function InformasiPage() {
     setForm({ judul: '', konten: '', penulis: '', kategori: 'Umum', youtubeUrl: '' });
     setAgendaForm({ title: '', tgl: '', bln: 'Mei', time: '', loc: '', deskripsi: '', penulis: '' });
     setFotoPreview(null);
-    setFotoFile(null);
     setShowForm(null);
   };
 
