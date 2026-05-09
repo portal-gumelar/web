@@ -53,7 +53,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar user={user} onLogout={handleLogout} />
+      <Navbar 
+        activePage={location.pathname.substring(1) as any || 'home'} 
+        setActivePage={handlePageChange as any} 
+        user={user} 
+        onLogout={handleLogout} 
+      />
       <main>
         <Routes>
           <Route path="/" element={<HomePage setActivePage={handlePageChange as any} />} />
