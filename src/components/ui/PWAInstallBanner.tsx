@@ -10,10 +10,8 @@ export default function PWAInstallBanner() {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      const isDismissed = sessionStorage.getItem('pwa_banner_dismissed');
-      if (!isDismissed) {
-        setTimeout(() => setShowBanner(true), 2000);
-      }
+      // Force show for testing
+      setShowBanner(true);
     });
 
     window.addEventListener('appinstalled', () => {
