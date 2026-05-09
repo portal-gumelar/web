@@ -7,13 +7,9 @@ export default function PWAInstallBanner() {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    // Listen for the beforeinstallprompt event
     window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
-      // Check if user has already dismissed it this session
       const isDismissed = sessionStorage.getItem('pwa_banner_dismissed');
       if (!isDismissed) {
         setShowBanner(true);
@@ -21,26 +17,19 @@ export default function PWAInstallBanner() {
     });
 
     window.addEventListener('appinstalled', () => {
-      // Log install to analytics or hide banner
       setShowBanner(false);
       setDeferredPrompt(null);
-      console.log('PWA was installed');
     });
   }, []);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
-    
-    // Show the install prompt
     deferredPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice;
-    console.log(`User response to the install prompt: ${outcome}`);
-    
-    // We've used the prompt, and can't use it again, throw it away
-    setDeferredPrompt(null);
-    setShowBanner(false);
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+      setShowBanner(false);
+    }
   };
 
   const handleDismiss = () => {
@@ -51,48 +40,78 @@ export default function PWAInstallBanner() {
   return (
     <AnimatePresence>
       {showBanner && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          className="fixed bottom-24 left-4 right-4 md:left-auto md:right-8 md:bottom-8 z-[999] md:w-96"
-        >
-          <div className="bg-white rounded-[2rem] shadow-2xl border border-blue-100 p-6 relative overflow-hidden group">
-            {/* Background Decoration */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-500" />
-            
-            <div className="flex items-start gap-4 relative z-10">
-              <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200 shrink-0">
-                <Smartphone size={24} />
-              </div>
+        <>
+          {/* Overlay to catch clicks anywhere else */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleDismiss}
+            className="fixed inset-0 z-[998] bg-slate-900/10 backdrop-blur-[2px]"
+          />
+
+          <motion.div
+            initial={{ y: 50, opacity: 0, scale: 0.9 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 50, opacity: 0, scale: 0.9 }}
+            className="fixed bottom-6 left-4 right-4 md:left-auto md:right-8 md:bottom-8 z-[999] md:w-[400px]"
+          >
+            <div className="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-blue-50 p-6 relative overflow-hidden group">
+              {/* Decorative Gradient */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600" />
               
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-black text-slate-900 text-sm">Instal GUMELAR.ID</h3>
-                  <Sparkles size={14} className="text-amber-400 animate-pulse" />
+              <div className="flex items-start gap-5 relative z-10">
+                <div className="relative shrink-0">
+                  <div className="w-16 h-16 bg-white rounded-3xl p-1 shadow-xl border border-slate-100 flex items-center justify-center overflow-hidden">
+                    <img 
+                      src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg?updatedAt=1778265866416" 
+                      alt="Gumelar Logo" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white border-2 border-white">
+                    <Smartphone size={12} />
+                  </div>
                 </div>
-                <p className="text-xs text-slate-500 leading-relaxed mb-4">
-                  Akses Kasir & Layanan Member lebih cepat dengan menginstal aplikasi di layar utama Anda.
-                </p>
                 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleInstall}
-                    className="flex-1 py-3 bg-blue-600 text-white text-xs font-black rounded-xl shadow-md hover:bg-blue-700 transition-all flex items-center justify-center gap-2 active:scale-95"
-                  >
-                    <Download size={14} /> Instal Sekarang
-                  </button>
-                  <button
-                    onClick={handleDismiss}
-                    className="p-3 text-slate-400 hover:bg-slate-50 rounded-xl transition-all"
-                  >
-                    <X size={16} />
-                  </button>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-black text-slate-900 text-base tracking-tight">Instal Portal Gumelar</h3>
+                      <Sparkles size={14} className="text-amber-400 fill-amber-400 animate-pulse" />
+                    </div>
+                    <button
+                      onClick={handleDismiss}
+                      className="p-1 text-slate-300 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                  
+                  <p className="text-xs text-slate-500 leading-relaxed mb-5 font-medium">
+                    Nikmati akses Kasir UMKM & Layanan Member lebih cepat. Tanpa buka browser, langsung dari layar HP Anda!
+                  </p>
+                  
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={handleInstall}
+                      className="flex-[2] py-3.5 bg-blue-600 text-white text-xs font-black rounded-2xl shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all flex items-center justify-center gap-2 active:scale-95 group"
+                    >
+                      <Download size={14} className="group-hover:translate-y-0.5 transition-transform" /> 
+                      PASANG SEKARANG
+                    </button>
+                    <button
+                      onClick={handleDismiss}
+                      className="flex-1 py-3.5 bg-slate-50 text-slate-500 text-[10px] font-black rounded-2xl hover:bg-slate-100 transition-all uppercase tracking-widest"
+                    >
+                      Nanti Saja
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
