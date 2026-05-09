@@ -22,6 +22,7 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import MemberToolsPage from './pages/MemberToolsPage';
 import FomoNotification from './components/ui/FomoNotification';
 import ErrorBoundary from './components/ui/ErrorBoundary';
+import PWAInstallBanner from './components/ui/PWAInstallBanner';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -55,13 +56,13 @@ function AppContent() {
       <Navbar user={user} onLogout={handleLogout} />
       <main>
         <Routes>
-          <Route path="/" element={<HomePage setActivePage={handlePageChange} />} />
-          <Route path="/home" element={<HomePage setActivePage={handlePageChange} />} />
+          <Route path="/" element={<HomePage setActivePage={handlePageChange as any} />} />
+          <Route path="/home" element={<HomePage setActivePage={handlePageChange as any} />} />
           <Route path="/tentang" element={<TentangPage />} />
           <Route path="/informasi" element={<InformasiPage />} />
           <Route path="/kreatif" element={<RuangKreatifPage />} />
           <Route path="/jasa" element={<InfoJasaPage />} />
-          <Route path="/layanan" element={<LayananPage setActivePage={handlePageChange} />} />
+          <Route path="/layanan" element={<LayananPage setActivePage={handlePageChange as any} />} />
           <Route path="/compress-pdf" element={<CompressPdfPage />} />
           <Route path="/buat-cv" element={<BuatCVPage />} />
           <Route path="/qr-code" element={<QRCodePage />} />
@@ -81,6 +82,7 @@ function AppContent() {
         <Footer />
       )}
       <FomoNotification />
+      <PWAInstallBanner />
     </div>
   );
 }
