@@ -194,8 +194,13 @@ export default function KasirPage() {
 
         <div className="flex flex-col lg:flex-row items-center justify-between mb-8 gap-6">
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/layanan')} className="p-4 bg-white rounded-2xl border"><ArrowLeft size={20} /></button>
-            <h1 className="text-2xl font-black">Kasir <span className="text-blue-600">Gumelar</span></h1>
+            <button 
+              onClick={() => showAdmin ? setShowAdmin(false) : navigate('/layanan')} 
+              className="p-4 bg-white rounded-2xl border transition-all hover:bg-slate-50 active:scale-95"
+            >
+              <ArrowLeft size={20} />
+            </button>
+            <h1 className="text-2xl font-black">{showAdmin ? 'Kelola Toko' : 'Kasir'} <span className="text-blue-600">Gumelar</span></h1>
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-3 bg-white p-2 rounded-2xl border w-64 lg:w-80">
