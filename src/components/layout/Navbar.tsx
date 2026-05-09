@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, Coffee, Home, Info, Newspaper, Palette, Briefcase, Star, LogIn, User, LogOut } from 'lucide-react';
+import { Menu, X, Coffee, Home, Info, Newspaper, Palette, Briefcase, Star, LogIn, User, LogOut, Camera } from 'lucide-react';
 import { ActivePage, User as UserType } from '../../types';
 
 interface NavbarProps {
@@ -21,6 +21,20 @@ const navItems = [
 export default function Navbar({ activePage, setActivePage, user, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && user) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const updatedUser = { ...user, avatar: reader.result as string };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        // We reload to sync all components using the user data
+        window.location.reload();
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleNav = (page: ActivePage) => {
     setActivePage(page);
@@ -86,8 +100,12 @@ export default function Navbar({ activePage, setActivePage, user, onLogout }: Na
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 pl-2 pr-4 py-1.5 bg-slate-800 text-white rounded-full border border-slate-700 hover:bg-slate-700 transition-all"
                 >
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
-                    {user.name.charAt(0).toUpperCase()}
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black overflow-hidden ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
+                    {user.avatar ? (
+                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
+                    )}
                   </div>
                   <div className="text-left">
                     <div className="text-[10px] font-bold leading-none truncate max-w-[80px]">{user.name}</div>
@@ -97,11 +115,29 @@ export default function Navbar({ activePage, setActivePage, user, onLogout }: Na
                 
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Akun Saya</p>
-                      <p className="text-sm font-black text-gray-800 truncate">{user.name}</p>
+                    <div className="relative group px-4 py-4 flex flex-col items-center border-b border-gray-50 bg-slate-50/50">
+                      <div className="relative">
+                        <div className={`w-16 h-16 rounded-[2rem] flex items-center justify-center text-2xl font-black overflow-hidden shadow-inner ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
+                          {user.avatar ? (
+                            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                          ) : (
+                            user.name.charAt(0).toUpperCase()
+                          )}
+                        </div>
+                        <button 
+                          onClick={() => document.getElementById('avatar-input')?.click()}
+                          className="absolute -bottom-1 -right-1 p-2 bg-white rounded-xl shadow-lg border border-gray-100 text-blue-600 hover:text-blue-700 transition-all active:scale-90"
+                        >
+                          <Camera size={14} />
+                        </button>
+                        <input id="avatar-input" type="file" hidden accept="image/*" onChange={handleAvatarUpload} />
+                      </div>
+                      <div className="text-center mt-3">
+                        <p className="text-sm font-black text-gray-800">{user.name}</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">{user.role}</p>
+                      </div>
                     </div>
-                    <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                    <button className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 hover:bg-gray-50 transition-colors font-bold">
                       <User size={16} /> Profil Member
                     </button>
                     <button
@@ -149,8 +185,12 @@ export default function Navbar({ activePage, setActivePage, user, onLogout }: Na
           <div className="px-4 py-5 space-y-2">
             {user && (
               <div className="flex items-center gap-4 p-4 bg-slate-800 rounded-2xl mb-4">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-black ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
-                  {user.name.charAt(0).toUpperCase()}
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-black overflow-hidden ${user.role === 'admin' ? 'bg-amber-500 text-slate-900' : 'bg-blue-600 text-white'}`}>
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                  ) : (
+                    user.name.charAt(0).toUpperCase()
+                  )}
                 </div>
                 <div>
                   <h3 className="text-white font-black">{user.name}</h3>

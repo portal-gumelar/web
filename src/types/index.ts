@@ -60,6 +60,7 @@ export interface KaryaItem {
 export interface User {
   name: string;
   role: 'admin' | 'member' | 'guest';
+  avatar?: string;
 }
 
 export type ActivePage = 
