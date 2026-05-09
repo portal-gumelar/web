@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, X, Smartphone, Sparkles } from 'lucide-react';
+import { Download, X, Smartphone, Sparkles, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PWAInstallBanner() {
@@ -12,7 +12,7 @@ export default function PWAInstallBanner() {
       setDeferredPrompt(e);
       const isDismissed = sessionStorage.getItem('pwa_banner_dismissed');
       if (!isDismissed) {
-        setShowBanner(true);
+        setTimeout(() => setShowBanner(true), 2000);
       }
     });
 
@@ -41,72 +41,54 @@ export default function PWAInstallBanner() {
     <AnimatePresence>
       {showBanner && (
         <>
-          {/* Overlay to catch clicks anywhere else */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleDismiss}
-            className="fixed inset-0 z-[998] bg-slate-900/10 backdrop-blur-[2px]"
+            className="fixed inset-0 z-[998] bg-slate-900/20 backdrop-blur-[4px]"
           />
 
           <motion.div
-            initial={{ y: 50, opacity: 0, scale: 0.9 }}
+            initial={{ y: 100, opacity: 0, scale: 0.9 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 50, opacity: 0, scale: 0.9 }}
-            className="fixed bottom-6 left-4 right-4 md:left-auto md:right-8 md:bottom-8 z-[999] md:w-[400px]"
+            exit={{ y: 100, opacity: 0, scale: 0.9 }}
+            className="fixed bottom-6 left-4 right-4 md:left-auto md:right-10 md:bottom-10 z-[999] md:w-[420px]"
           >
-            <div className="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-blue-50 p-6 relative overflow-hidden group">
-              {/* Decorative Gradient */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600" />
-              
-              <div className="flex items-start gap-5 relative z-10">
-                <div className="relative shrink-0">
-                  <div className="w-16 h-16 bg-white rounded-3xl p-1 shadow-xl border border-slate-100 flex items-center justify-center overflow-hidden">
-                    <img 
-                      src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg?updatedAt=1778265866416" 
-                      alt="Gumelar Logo" 
-                      className="w-full h-full object-cover"
-                    />
+            <div className="bg-white/90 backdrop-blur-xl rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.25)] border border-white p-2 relative overflow-hidden group">
+              <div className="bg-white rounded-[2.5rem] p-6 relative z-10">
+                <div className="flex items-start gap-5">
+                  <div className="relative shrink-0">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2rem] p-1 shadow-2xl rotate-3 overflow-hidden">
+                      <img 
+                        src="https://ik.imagekit.io/Gumelar/LogO/WhatsApp%20Image%202026-05-08%20at%2022.31.20.jpeg?updatedAt=1778265866416" 
+                        alt="Logo" 
+                        className="w-full h-full object-cover rounded-[1.8rem]"
+                      />
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-2xl flex items-center justify-center text-blue-600 shadow-lg border border-blue-50">
+                      <Zap size={16} fill="currentColor" />
+                    </div>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white border-2 border-white">
-                    <Smartphone size={12} />
+                  
+                  <div className="flex-1 min-w-0 pt-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase">Aplikasi</span>
+                        <Sparkles size={16} className="text-amber-400 fill-amber-400" />
+                      </div>
+                      <button onClick={handleDismiss} className="text-slate-300 hover:text-slate-900"><X size={20} /></button>
+                    </div>
+                    <h3 className="font-black text-slate-900 text-xl tracking-tight leading-none mb-2">GUMELAR.ID</h3>
+                    <p className="text-xs text-slate-500 leading-relaxed font-bold opacity-80">Instal Kasir & Layanan Member secepat kilat! 🚀</p>
                   </div>
                 </div>
                 
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-black text-slate-900 text-base tracking-tight">Instal Portal Gumelar</h3>
-                      <Sparkles size={14} className="text-amber-400 fill-amber-400 animate-pulse" />
-                    </div>
-                    <button
-                      onClick={handleDismiss}
-                      className="p-1 text-slate-300 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all"
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
-                  
-                  <p className="text-xs text-slate-500 leading-relaxed mb-5 font-medium">
-                    Nikmati akses Kasir UMKM & Layanan Member lebih cepat. Tanpa buka browser, langsung dari layar HP Anda!
-                  </p>
-                  
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={handleInstall}
-                      className="flex-[2] py-3.5 bg-blue-600 text-white text-xs font-black rounded-2xl shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all flex items-center justify-center gap-2 active:scale-95 group"
-                    >
-                      <Download size={14} className="group-hover:translate-y-0.5 transition-transform" /> 
-                      PASANG SEKARANG
-                    </button>
-                    <button
-                      onClick={handleDismiss}
-                      className="flex-1 py-3.5 bg-slate-50 text-slate-500 text-[10px] font-black rounded-2xl hover:bg-slate-100 transition-all uppercase tracking-widest"
-                    >
-                      Nanti Saja
-                    </button>
-                  </div>
+                <div className="mt-6 flex items-center gap-3">
+                  <button onClick={handleInstall} className="flex-[3] py-4 bg-slate-900 text-white text-xs font-black rounded-2xl shadow-xl hover:bg-blue-600 transition-all flex items-center justify-center gap-3 active:scale-95">
+                    <Download size={16} /> PASANG APLIKASI
+                  </button>
+                  <button onClick={handleDismiss} className="flex-1 py-4 bg-slate-100 text-slate-400 text-[10px] font-black rounded-2xl hover:bg-slate-200 transition-all uppercase tracking-widest">Nanti</button>
                 </div>
               </div>
             </div>
