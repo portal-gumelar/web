@@ -27,10 +27,38 @@ export default function Navbar({ activePage, setActivePage, user, onLogout }: Na
     if (file && user) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const updatedUser = { ...user, avatar: reader.result as string };
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-        // We reload to sync all components using the user data
-        window.location.reload();
+        const img = new Image();
+        img.src = reader.result as string;
+        img.onload = () => {
+          // Auto Scale Logic
+          const canvas = document.createElement('canvas');
+          const MAX_SIZE = 400; // Ukuran optimal untuk avatar
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with 0.8 quality
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          const updatedUser = { ...user, avatar: compressedDataUrl };
+          localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+          window.location.reload();
+        };
       };
       reader.readAsDataURL(file);
     }
