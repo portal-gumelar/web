@@ -263,7 +263,7 @@ export default function PortfolioWebPage() {
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-amber-400 mt-1">•</span> 
-                        <span>Mempercepat proses pengerjaan (Estimasi 3-7 hari kerja).</span>
+                        <span>Mempercepat proses pengerjaan (Estimasi 3-7 hari kerja sesuai antrian).</span>
                       </li>
                     </ul>
                   </div>
