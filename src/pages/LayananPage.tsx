@@ -1,4 +1,4 @@
-import { Star, FileText, FileCheck, FileSignature, QrCode, Image, LayoutGrid, Coffee, Heart, Globe, ArrowRight, Calculator } from 'lucide-react';
+import { Star, FileText, FileCheck, FileSignature, QrCode, Image, LayoutGrid, Coffee, Heart, Globe, ArrowRight, Calculator, Sparkles } from 'lucide-react';
 import { ActivePage } from '../types';
 
 interface LayananPageProps {
@@ -181,6 +181,24 @@ export default function LayananPage({ setActivePage }: LayananPageProps) {
             </p>
             <div className="mt-auto flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-widest">
               Gunakan Kasir <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </button>
+
+          {/* Member Tools Hub */}
+          <button
+            onClick={() => setActivePage('member-tools')}
+            className="bg-slate-900 rounded-[2rem] shadow-xl p-8 text-left hover:-translate-y-2 transition-all duration-300 group relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-[50px]" />
+            <div className="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Sparkles className="text-slate-900" size={24} />
+            </div>
+            <h3 className="text-xl font-black text-white mb-2 group-hover:text-amber-400 transition-colors">Member Tools Hub</h3>
+            <p className="text-slate-400 text-xs leading-relaxed mb-6">
+              Akses kalkulator profit, generator caption AI, kartu nama digital, dan papan info warga dalam satu tempat.
+            </p>
+            <div className="mt-auto flex items-center gap-2 text-amber-500 font-bold text-xs uppercase tracking-widest">
+              Buka Hub <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </div>
           </button>
 

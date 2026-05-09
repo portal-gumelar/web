@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { User, ActivePage } from './types';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import TentangPage from './pages/TentangPage';
 import InformasiPage from './pages/InformasiPage';
@@ -16,80 +16,69 @@ import DonasiPage from './pages/DonasiPage';
 import DaftarMemberPage from './pages/DaftarMemberPage';
 import SuratOnlinePage from './pages/SuratOnlinePage';
 import LoginPage from './pages/LoginPage';
-import Footer from './components/layout/Footer';
-import FomoNotification from './components/ui/FomoNotification';
-import ErrorBoundary from './components/ui/ErrorBoundary';
 import PortfolioWebPage from './pages/PortfolioWebPage';
 import KasirPage from './pages/KasirPage';
 import AdminLoginPage from './pages/AdminLoginPage';
+import MemberToolsPage from './pages/MemberToolsPage';
+import FomoNotification from './components/ui/FomoNotification';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState<User | null>(null);
-
-  // Derive active page from path
-  const path = location.pathname.split('/')[1] || 'home';
-  const activePage = path as ActivePage;
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('gumelar_user');
-      if (savedUser) setUser(JSON.parse(savedUser));
-    } catch (e) {
-      console.error("Gagal memuat session user:", e);
-      localStorage.removeItem('gumelar_user');
-    }
-  }, []);
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) setUser(JSON.parse(savedUser));
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
-  const handleLogin = (role: 'admin' | 'member', name: string) => {
-    const newUser: User = { name, role };
-    setUser(newUser);
-    localStorage.setItem('gumelar_user', JSON.stringify(newUser));
-    navigate('/home');
+  const handleLogin = (userData: any) => {
+    setUser(userData);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('currentUser');
     setUser(null);
-    localStorage.removeItem('gumelar_user');
-    navigate('/home');
+    navigate('/');
   };
 
-  const hasOwnFooter = activePage === 'home';
+  const hasOwnFooter = ['/login', '/portal-admin'].includes(location.pathname);
+
+  const handlePageChange = (page: string) => {
+    navigate(`/${page}`);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50" style={{ fontFamily: "'Poppins', sans-serif" }}>
-      <Navbar 
-        activePage={activePage} 
-        setActivePage={(page) => navigate(`/${page}`)} 
-        user={user} 
-        onLogout={handleLogout} 
-      />
+    <div className="min-h-screen bg-white">
+      <Navbar user={user} onLogout={handleLogout} />
       <main>
         <Routes>
-          <Route path="/" element={<HomePage setActivePage={(page) => navigate(`/${page}`)} />} />
-          <Route path="/home" element={<HomePage setActivePage={(page) => navigate(`/${page}`)} />} />
+          <Route path="/" element={<HomePage setActivePage={handlePageChange} />} />
+          <Route path="/home" element={<HomePage setActivePage={handlePageChange} />} />
           <Route path="/tentang" element={<TentangPage />} />
           <Route path="/informasi" element={<InformasiPage />} />
           <Route path="/kreatif" element={<RuangKreatifPage />} />
           <Route path="/jasa" element={<InfoJasaPage />} />
-          <Route path="/layanan" element={<LayananPage setActivePage={(page) => navigate(`/${page}`)} />} />
+          <Route path="/layanan" element={<LayananPage setActivePage={handlePageChange} />} />
           <Route path="/compress-pdf" element={<CompressPdfPage />} />
           <Route path="/buat-cv" element={<BuatCVPage />} />
           <Route path="/qr-code" element={<QRCodePage />} />
           <Route path="/image-optimizer" element={<ImageOptimizerPage />} />
           <Route path="/donasi" element={<DonasiPage />} />
           <Route path="/daftar-member" element={<DaftarMemberPage />} />
-          <Route path="/surat-online" element={<SuratOnlinePage setActivePage={(page) => navigate(`/${page}`)} />} />
+          <Route path="/surat-online" element={<SuratOnlinePage />} />
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/portal-admin" element={<AdminLoginPage onLogin={handleLogin} />} />
           <Route path="/portfolio" element={<PortfolioWebPage />} />
           <Route path="/kasir" element={<KasirPage />} />
-          <Route path="*" element={<HomePage setActivePage={(page) => navigate(`/${page}`)} />} />
+          <Route path="/member-tools" element={<MemberToolsPage />} />
+          <Route path="*" element={<HomePage setActivePage={handlePageChange} />} />
         </Routes>
       </main>
       {!hasOwnFooter && (
-        <Footer setActivePage={(page) => navigate(`/${page}`)} />
+        <Footer />
       )}
       <FomoNotification />
     </div>

@@ -405,6 +405,54 @@ export default function HomePage({ setActivePage }: HomePageProps) {
         </div>
       </section>
 
+      {/* Tech Stack Marquee Section */}
+      <section className="py-20 bg-white overflow-hidden border-t border-slate-50">
+        <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
+          <p className="text-[10px] font-black text-blue-600 uppercase tracking-[0.4em] mb-4">Industrial Standard Technology</p>
+          <h2 className="text-3xl font-black text-slate-900">Teknologi di Balik <span className="text-blue-600">GUMELAR.ID</span></h2>
+        </div>
+
+        <div className="relative flex overflow-x-hidden">
+          <motion.div 
+            animate={{ x: [0, -1920] }}
+            transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+            className="flex gap-12 items-center whitespace-nowrap"
+          >
+            {[
+              { name: 'React', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+              { name: 'Laravel', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg' },
+              { name: 'Tailwind', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
+              { name: 'TypeScript', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+              { name: 'Vite', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg' },
+              { name: 'PostgreSQL', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+              { name: 'Vercel', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg' },
+              { name: 'Framer', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/framermotion/framermotion-original.svg' },
+            ].map((tech, i) => (
+              <div key={i} className="flex items-center justify-center gap-3 bg-white px-6 py-4 rounded-2xl shadow-sm border border-slate-100 group hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 min-w-[160px]">
+                <img src={tech.url} alt={tech.name} className="h-7 w-7 object-contain transition-all duration-500 group-hover:scale-110" />
+                <span className="font-black text-slate-900 uppercase text-[10px] tracking-widest">{tech.name}</span>
+              </div>
+            ))}
+            {/* Duplicate for infinite loop */}
+            {[
+              { name: 'React', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+              { name: 'Laravel', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg' },
+              { name: 'Tailwind', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
+              { name: 'TypeScript', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+              { name: 'Vite', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg' },
+              { name: 'PostgreSQL', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+              { name: 'Vercel', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg' },
+              { name: 'Framer', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/framermotion/framermotion-original.svg' },
+            ].map((tech, i) => (
+              <div key={`dup-${i}`} className="flex items-center justify-center gap-3 bg-white px-6 py-4 rounded-2xl shadow-sm border border-slate-100 group hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 min-w-[160px]">
+                <img src={tech.url} alt={tech.name} className="h-7 w-7 object-contain transition-all duration-500 group-hover:scale-110" />
+                <span className="font-black text-slate-900 uppercase text-[10px] tracking-widest">{tech.name}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-16 px-6">
         <div className="max-w-6xl mx-auto">

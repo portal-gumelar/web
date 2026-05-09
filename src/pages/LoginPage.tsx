@@ -113,7 +113,7 @@ export default function LoginPage({ onLogin }: { onLogin: (user: any) => void })
                       <div className="relative flex items-center justify-center">
                         <input type="checkbox" className="peer appearance-none w-5 h-5 border-2 border-gray-200 rounded-lg checked:bg-blue-600 checked:border-blue-600 transition-all" />
                         <div className="absolute opacity-0 peer-checked:opacity-100 text-white pointer-events-none">
-                          <svg size={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
                       </div>
                       <span className="text-xs font-bold text-gray-500 group-hover:text-gray-700 transition-colors">Ingat saya di perangkat ini</span>

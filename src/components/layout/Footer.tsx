@@ -71,6 +71,7 @@ export default function Footer() {
             <h4 className="font-black text-white text-sm uppercase tracking-widest mb-6">Layanan Member</h4>
             <ul className="space-y-3">
               {[
+                { path: '/member-tools', label: 'Member Tools Hub (New)' },
                 { path: '/kasir', label: 'Kasir Sederhana UMKM' },
                 { path: '/portfolio', label: 'Galeri Portofolio Web' },
                 { path: '/qr-code', label: 'Generator QR Code' },

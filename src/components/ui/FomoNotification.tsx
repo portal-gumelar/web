@@ -71,26 +71,26 @@ export default function FomoNotification() {
           initial={{ opacity: 0, x: -50, scale: 0.8 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -50, scale: 0.8 }}
-          className="fixed bottom-6 left-6 z-[999] max-w-[280px] md:max-w-sm"
+          className="fixed bottom-4 left-4 z-[999] max-w-[240px] md:max-w-[280px]"
         >
-          <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 flex items-center gap-4 relative overflow-hidden group">
+          <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2.5 flex items-center gap-3 relative overflow-hidden group">
             {/* Animated Glow Line */}
             <div className="absolute top-0 left-0 w-1 h-full bg-blue-500" />
             
-            <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-50 transition-colors">
+            <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-50 transition-colors">
               {currentFomo.icon}
             </div>
             
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-0.5">Aktivitas Terkini</p>
-              <p className="text-xs text-slate-800 leading-tight">
+              <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest mb-0">Aktivitas</p>
+              <p className="text-[10px] text-slate-800 leading-tight">
                 <span className="font-bold">{currentFomo.user}</span> {currentFomo.action}
               </p>
-              <p className="text-[10px] text-slate-400 mt-1 font-medium">{currentFomo.time}</p>
+              <p className="text-[8px] text-slate-400 mt-0.5 font-medium">{currentFomo.time}</p>
             </div>
             
-            <div className="absolute top-2 right-2">
-              <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            <div className="absolute top-1.5 right-1.5">
+              <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
             </div>
           </div>
         </motion.div>

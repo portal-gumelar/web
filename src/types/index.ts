@@ -78,4 +78,5 @@ export type ActivePage =
   | 'image-optimizer'
   | 'portfolio'
   | 'kasir'
+  | 'member-tools'
   | 'login';

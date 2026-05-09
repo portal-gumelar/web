@@ -4,7 +4,6 @@ import { ActivePage } from '../types';
 import { useNavigate } from 'react-router-dom';
 
 interface SuratOnlinePageProps {
-  setActivePage: (page: ActivePage) => void;
 }
 
 export default function SuratOnlinePage({  }: SuratOnlinePageProps) {
